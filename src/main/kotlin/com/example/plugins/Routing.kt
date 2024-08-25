@@ -2,7 +2,6 @@ package com.example.plugins
 
 import com.example.models.response.models.ErrorResponse
 import com.example.models.task.models.TaskRepository
-import com.example.models.task.models.TaskWithoutId
 import com.example.models.user.models.User
 import com.example.models.user.models.UserRepository
 import io.ktor.http.*
@@ -14,9 +13,9 @@ import io.ktor.server.routing.*
 fun Application.configureRouting() {
     routing {
         route("/users") {
-           post("/register") {
-               try {
-                   val user = call.receive<User>()
+            post("/register") {
+                try {
+                    val user = call.receive<User>()
                     if (UserRepository.registerUser(user)) {
                         call.respond(HttpStatusCode.OK)
                     } else {
@@ -28,22 +27,21 @@ fun Application.configureRouting() {
                             )
                         )
                     }
-               } catch(e: IllegalArgumentException) {
-                   call.respond(
-                       HttpStatusCode.BadRequest,
-                       ErrorResponse(
-                           HttpStatusCode.BadRequest.value,
-                           "The json file could not be read."
-                       )
-                   )
-               }
-           }
+                } catch (e: IllegalArgumentException) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ErrorResponse(
+                            HttpStatusCode.BadRequest.value,
+                            "The json file could not be read."
+                        )
+                    )
+                }
+            }
         }
         route("/tasks") {
             get {
                 try {
                     val user = call.receive<User>()
-
                     val tasks = TaskRepository.getTasks(user)
 
                     tasks?.let {
