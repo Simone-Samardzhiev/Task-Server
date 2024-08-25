@@ -134,11 +134,49 @@ fun Application.configureRouting() {
                                 HttpStatusCode.Unauthorized,
                                 ErrorResponse(
                                     HttpStatusCode.Unauthorized.value,
-                                    "The email or the password is invalid."
+                                    "The email or the password is invalid or the task doesn't exist."
                                 )
                             )
                         }
 
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            ErrorResponse(
+                                HttpStatusCode.BadRequest.value,
+                                "The json file could not be read."
+                            )
+                        )
+                    }
+                }
+            }
+
+            delete("/removeTask") {
+                val email = call.request.queryParameters["email"]
+                val password = call.request.queryParameters["password"]
+                if (email == null || password == null) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ErrorResponse(
+                            HttpStatusCode.BadRequest.value,
+                            "The query parameters email and password must be specified."
+                        )
+                    )
+                } else {
+                    try {
+                        val task = call.receive<Task>()
+
+                        if (TaskRepository.deleteTask(User(email, password), task.id)) {
+                            call.respond(HttpStatusCode.NoContent)
+                        } else {
+                            call.respond(
+                                HttpStatusCode.Unauthorized,
+                                ErrorResponse(
+                                    HttpStatusCode.Unauthorized.value,
+                                    "The email or the password is invalid or the task doesn't exist."
+                                )
+                            )
+                        }
                     } catch (e: IllegalArgumentException) {
                         call.respond(
                             HttpStatusCode.BadRequest,
