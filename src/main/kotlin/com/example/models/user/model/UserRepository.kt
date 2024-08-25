@@ -50,4 +50,19 @@ object UserRepository {
             } ?: false
         }
     }
+
+    // Method that will return the user id or null if the credentials are incorrect.
+    fun getUserId(user: User): UUID? {
+        return transaction {
+            if (checkUserCredentials(user)) {
+                UserTable
+                    .select(UserTable.id)
+                    .where(UserTable.email eq user.email)
+                    .lastOrNull()
+                    ?.get(UserTable.id)
+            } else {
+                null
+            }
+        }
+    }
 }
