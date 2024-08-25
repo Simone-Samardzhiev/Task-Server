@@ -31,7 +31,7 @@ object TaskRepository {
     }
 
     // Method that will add a task if the user credentials are correct.
-    fun addTask(user: User, task: Task): Boolean {
+    fun addTask(user: User, task: TaskWithoutId): Boolean {
         return transaction {
             val userId = UserRepository.getUserId(user)
             userId?.let {
