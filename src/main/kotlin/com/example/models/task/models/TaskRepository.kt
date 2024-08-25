@@ -1,7 +1,7 @@
-package com.example.models.task.model
+package com.example.models.task.models
 
-import com.example.models.user.model.User
-import com.example.models.user.model.UserRepository
+import com.example.models.user.models.User
+import com.example.models.user.models.UserRepository
 import com.example.tables.TaskTable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere

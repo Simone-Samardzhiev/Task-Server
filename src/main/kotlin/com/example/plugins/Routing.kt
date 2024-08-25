@@ -1,9 +1,10 @@
 package com.example.plugins
 
-import com.example.models.errors.model.ErrorResponse
-import com.example.models.task.model.TaskRepository
-import com.example.models.user.model.User
-import com.example.models.user.model.UserRepository
+import com.example.models.response.models.ErrorResponse
+import com.example.models.task.models.TaskRepository
+import com.example.models.task.models.TaskWithoutId
+import com.example.models.user.models.User
+import com.example.models.user.models.UserRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -24,7 +25,8 @@ fun Application.configureRouting() {
                             ErrorResponse(
                                 HttpStatusCode.Conflict.value,
                                 "The email is already in use."
-                            ))
+                            )
+                        )
                     }
                } catch(e: IllegalArgumentException) {
                    call.respond(

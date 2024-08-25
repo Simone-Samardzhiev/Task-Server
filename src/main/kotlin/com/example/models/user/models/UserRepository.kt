@@ -1,4 +1,4 @@
-package com.example.models.user.model
+package com.example.models.user.models
 
 import com.example.tables.UserTable
 import com.example.tables.UserTable.password

@@ -1,4 +1,4 @@
-package com.example.models.errors.model
+package com.example.models.response.models
 
 import kotlinx.serialization.Serializable
 
