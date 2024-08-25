@@ -2,7 +2,6 @@ package com.example.models.user.model
 
 import com.example.tables.UserTable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
@@ -41,14 +40,13 @@ object UserRepository {
     // Method that will check the user credentials.
     suspend fun checkUserCredentials(user: User): Boolean {
         return transaction {
-            val hashedPassword = UserTable
+            val foundUser = UserTable
                 .select(UserTable.password)
                 .where(UserTable.email eq user.email)
                 .singleOrNull()
-                ?.get(UserTable.password)
 
-            hashedPassword?.let {
-                BCrypt.checkpw(user.password, it)
+            foundUser?.let {
+                BCrypt.checkpw(user.password, it[UserTable.password])
             } ?:  false
         }
     }
