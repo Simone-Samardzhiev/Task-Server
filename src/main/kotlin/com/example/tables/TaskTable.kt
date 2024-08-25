@@ -16,7 +16,7 @@ object TaskTable : Table("tasks") {
     // The priority of the task.
     val priority: Column<String> = varchar("priority", 50)
     // Foreign key that reference a user id.
-    val userId :Column<UUID> = reference("user_id", UserTable.id)
+    val user_id :Column<UUID> = reference("user_id", UserTable.id)
     // Setting the primary key of the task.
     override val primaryKey: PrimaryKey = PrimaryKey(id)
 }
