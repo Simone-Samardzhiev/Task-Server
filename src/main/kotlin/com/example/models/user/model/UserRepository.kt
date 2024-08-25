@@ -1,9 +1,9 @@
 package com.example.models.user.model
 
 import com.example.tables.UserTable
-import kotlinx.coroutines.selects.select
+import com.example.tables.UserTable.password
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
 import java.util.UUID
@@ -22,19 +22,19 @@ object UserRepository {
 
     // Method that will add register a user.
      fun registerUser(user: User): Boolean {
-        transaction {
+        return transaction {
             if (checkIfEmailInUse(user.email)) {
-                return@transaction false
+                UserTable
+                    .insert {
+                        it[id] = UUID.randomUUID()
+                        it[email] = user.email
+                        it[password] = BCrypt.hashpw(user.password, BCrypt.gensalt())
+                    }
+                true
+            } else {
+                false
             }
-            UserTable
-                .insert {
-                    it[id] = UUID.randomUUID()
-                    it[email] = user.email
-                    it[password] = BCrypt.hashpw(user.password, BCrypt.gensalt())
-                }
         }
-
-        return true
     }
 
     // Method that will check the user credentials.
