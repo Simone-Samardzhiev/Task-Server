@@ -10,11 +10,11 @@ object TaskRepository {
     // Method that will return all task of a user if the credentials are correct.
     fun getTasks(user: User): List<Task>? {
         return transaction {
-            val id = UserRepository.getUserId(user)
-            id?.let {
+            val userId = UserRepository.getUserId(user)
+            userId?.let {
                 TaskTable
                     .select(TaskTable.name, TaskTable.description, TaskTable.priority)
-                    .where { TaskTable.userId eq id }
+                    .where { TaskTable.user_id eq it }
                     .map {
                         Task(it[TaskTable.name], it[TaskTable.description], Priority.valueOf(it[TaskTable.priority]))
                     }
