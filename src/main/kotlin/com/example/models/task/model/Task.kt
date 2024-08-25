@@ -36,3 +36,12 @@ data class Task(
     val description: String,
     val priority: Priority
 )
+
+// Data class used when the user wants to add a new task.
+// The id is missing, because the server should manage and create the id.
+@Serializable
+data class TaskWithoutId(
+    val name: String,
+    val description: String,
+    val priority: Priority
+)
