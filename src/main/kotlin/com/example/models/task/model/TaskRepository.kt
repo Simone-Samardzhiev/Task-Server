@@ -3,6 +3,8 @@ package com.example.models.task.model
 import com.example.models.user.model.User
 import com.example.models.user.model.UserRepository
 import com.example.tables.TaskTable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -60,6 +62,19 @@ object TaskRepository {
                     it[priority] = task.priority.name
                 }
                 updatedRows > 0
+            } ?: false
+        }
+    }
+
+    // Method that will delete a task.
+    fun deleteTask(user: User, id: UUID): Boolean {
+        return transaction {
+            val userId = UserRepository.getUserId(user)
+            userId?.let {
+                val deleteRows = TaskTable.deleteWhere {
+                    TaskTable.id eq id
+                }
+                deleteRows > 0
             } ?: false
         }
     }
