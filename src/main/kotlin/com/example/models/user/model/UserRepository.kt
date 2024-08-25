@@ -11,19 +11,19 @@ import java.util.UUID
 // Repository used to get user data from the table.
 object UserRepository {
     // Method that will check if a user with this email exist.
-    private fun checkIfEmailInUse(email: String): Boolean {
+    private fun checkIfNotEmailInUse(email: String): Boolean {
         return transaction {
             UserTable
                 .select(UserTable.email)
                 .where { UserTable.email eq email }
-                .count() > 0
+                .empty();
         }
     }
 
     // Method that will add register a user.
      fun registerUser(user: User): Boolean {
         return transaction {
-            if (checkIfEmailInUse(user.email)) {
+            if (checkIfNotEmailInUse(user.email)) {
                 UserTable
                     .insert {
                         it[id] = UUID.randomUUID()
