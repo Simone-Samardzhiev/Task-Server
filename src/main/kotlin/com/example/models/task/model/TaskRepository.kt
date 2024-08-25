@@ -4,6 +4,7 @@ import com.example.models.user.model.User
 import com.example.models.user.model.UserRepository
 import com.example.tables.TaskTable
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.UUID
 
@@ -15,10 +16,15 @@ object TaskRepository {
             val userId = UserRepository.getUserId(user)
             userId?.let {
                 TaskTable
-                    .select(TaskTable.name, TaskTable.description, TaskTable.priority)
+                    .selectAll()
                     .where { TaskTable.user_id eq it }
                     .map {
-                        Task(it[TaskTable.name], it[TaskTable.description], Priority.valueOf(it[TaskTable.priority]))
+                        Task(
+                            it[TaskTable.id],
+                            it[TaskTable.name],
+                            it[TaskTable.description],
+                            Priority.valueOf(it[TaskTable.priority])
+                        )
                     }
             }
         }
@@ -41,4 +47,5 @@ object TaskRepository {
             } ?: false
         }
     }
+
 }
