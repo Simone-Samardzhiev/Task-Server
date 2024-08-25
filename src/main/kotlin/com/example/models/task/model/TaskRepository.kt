@@ -3,10 +3,10 @@ package com.example.models.task.model
 import com.example.models.user.model.User
 import com.example.models.user.model.UserRepository
 import com.example.tables.TaskTable
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import java.util.UUID
 
 // Repository used to get task data from the table.
@@ -49,13 +49,15 @@ object TaskRepository {
         }
     }
 
-    // Method that will check if a task with an id already exist.
-    private fun checkIfTaskExist(id: UUID): Boolean {
+    // Method that will update the task information.
+    fun updateTask(task: Task): Boolean {
         return transaction {
-            TaskTable
-                .select(TaskTable.id)
-                .where(TaskTable.id eq id)
-                .count() > 0
+            val updatedRows = TaskTable.update({TaskTable.id eq task.id}) {
+                it[name] = task.name
+                it[description] = task.description
+                it[priority] = task.priority.name
+            }
+            updatedRows > 0
         }
     }
 }
