@@ -10,7 +10,7 @@ import java.util.UUID
 // Repository used to get user data from the table.
 object UserRepository {
     // Method that will check if a user with this email exist.
-    suspend fun checkIfEmailInUse(email: String): Boolean {
+    private fun checkIfEmailInUse(email: String): Boolean {
         return transaction {
             UserTable
                 .select(UserTable.email)
@@ -20,7 +20,7 @@ object UserRepository {
     }
 
     // Method that will add register a user.
-    suspend fun registerUser(user: User): Boolean {
+     fun registerUser(user: User): Boolean {
         if (checkIfEmailInUse(user.email)) {
             return false
         }
@@ -38,7 +38,7 @@ object UserRepository {
     }
 
     // Method that will check the user credentials.
-    suspend fun checkUserCredentials(user: User): Boolean {
+    fun checkUserCredentials(user: User): Boolean {
         return transaction {
             val foundUser = UserTable
                 .select(UserTable.password)
