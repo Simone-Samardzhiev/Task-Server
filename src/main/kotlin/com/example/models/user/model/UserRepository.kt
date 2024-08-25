@@ -38,16 +38,16 @@ object UserRepository {
     }
 
     // Method that will check the user credentials.
-    fun checkUserCredentials(user: User): Boolean {
+    private fun checkUserCredentials(user: User): Boolean {
         return transaction {
             val foundUser = UserTable
-                .select(UserTable.password)
+                .select(UserTable.email)
                 .where(UserTable.email eq user.email)
                 .singleOrNull()
 
             foundUser?.let {
-                BCrypt.checkpw(user.password, it[UserTable.password])
-            } ?:  false
+                BCrypt.checkpw(user.password, it[password])
+            } ?: false
         }
     }
 }
