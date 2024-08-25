@@ -2,11 +2,11 @@ package com.example.models.user.models
 
 import com.example.tables.UserTable
 import com.example.tables.UserTable.password
-import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
-import java.util.UUID
+import java.util.*
 
 // Repository used to get user data from the table.
 object UserRepository {
@@ -16,7 +16,7 @@ object UserRepository {
             UserTable
                 .select(UserTable.email)
                 .where { UserTable.email eq email }
-                .empty();
+                .empty()
         }
     }
 
