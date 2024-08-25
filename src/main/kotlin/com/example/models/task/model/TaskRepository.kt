@@ -50,14 +50,17 @@ object TaskRepository {
     }
 
     // Method that will update the task information.
-    fun updateTask(task: Task): Boolean {
+    fun updateTask(user: User,task: Task): Boolean {
         return transaction {
-            val updatedRows = TaskTable.update({TaskTable.id eq task.id}) {
-                it[name] = task.name
-                it[description] = task.description
-                it[priority] = task.priority.name
-            }
-            updatedRows > 0
+            val userId = UserRepository.getUserId(user)
+            userId?.let {
+                val updatedRows = TaskTable.update({TaskTable.id eq task.id}) {
+                    it[name] = task.name
+                    it[description] = task.description
+                    it[priority] = task.priority.name
+                }
+                updatedRows > 0
+            } ?: false
         }
     }
 }
