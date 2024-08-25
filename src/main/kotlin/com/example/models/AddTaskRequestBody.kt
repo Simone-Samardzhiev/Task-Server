@@ -1,4 +1,4 @@
-package com.example.models.response.models
+package com.example.models
 
 import com.example.models.task.models.TaskWithoutId
 import com.example.models.user.models.User
