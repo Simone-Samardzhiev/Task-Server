@@ -9,6 +9,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import java.util.*
 
+// Enum used to create the priority of the task.
 enum class Priority {
     Low, Medium, High, Vital
 }
@@ -26,6 +27,7 @@ object UUIDSerializer : KSerializer<UUID> {
     }
 }
 
+// Data class that is used to create tasks.
 @Serializable
 data class Task(
     @Serializable(with = UUIDSerializer::class)
