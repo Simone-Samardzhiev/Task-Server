@@ -1,6 +1,7 @@
 package com.example.models.user.model
 
 import com.example.tables.UserTable
+import kotlinx.coroutines.selects.select
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -21,11 +22,10 @@ object UserRepository {
 
     // Method that will add register a user.
      fun registerUser(user: User): Boolean {
-        if (checkIfEmailInUse(user.email)) {
-            return false
-        }
-
         transaction {
+            if (checkIfEmailInUse(user.email)) {
+                return@transaction false
+            }
             UserTable
                 .insert {
                     it[id] = UUID.randomUUID()
