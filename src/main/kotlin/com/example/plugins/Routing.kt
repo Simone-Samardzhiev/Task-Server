@@ -2,6 +2,7 @@ package com.example.plugins
 
 
 import com.example.models.ErrorResponse
+import com.example.models.task.models.Task
 import com.example.models.task.models.TaskRepository
 import com.example.models.task.models.TaskWithoutId
 import com.example.models.user.models.User
@@ -82,12 +83,51 @@ fun Application.configureRouting() {
                             "The query parameters email and password must be specified."
                         )
                     )
-
                 } else {
                     try {
                         val task = call.receive<TaskWithoutId>()
 
                         if (TaskRepository.addTask(User(email, password), task)) {
+                            call.respond(HttpStatusCode.NoContent)
+                        } else {
+                            call.respond(
+                                HttpStatusCode.Unauthorized,
+                                ErrorResponse(
+                                    HttpStatusCode.Unauthorized.value,
+                                    "The email or the password is invalid."
+                                )
+                            )
+                        }
+
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            ErrorResponse(
+                                HttpStatusCode.BadRequest.value,
+                                "The json file could not be read."
+                            )
+                        )
+                    }
+                }
+            }
+
+            post("/updateTask") {
+                val email = call.request.queryParameters["email"]
+                val password = call.request.queryParameters["password"]
+
+                if (email == null || password == null) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ErrorResponse(
+                            HttpStatusCode.BadRequest.value,
+                            "The query parameters email and password must be specified."
+                        )
+                    )
+                } else {
+                    try {
+                        val task = call.receive<Task>()
+
+                        if (TaskRepository.updateTask(User(email, password), task)) {
                             call.respond(HttpStatusCode.NoContent)
                         } else {
                             call.respond(
