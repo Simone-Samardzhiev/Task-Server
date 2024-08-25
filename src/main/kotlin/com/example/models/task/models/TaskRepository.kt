@@ -18,17 +18,14 @@ object TaskRepository {
         return transaction {
             val userId = UserRepository.getUserId(user)
             userId?.let {
-                TaskTable
-                    .selectAll()
-                    .where { TaskTable.user_id eq it }
-                    .map {
-                        Task(
-                            it[TaskTable.id],
-                            it[TaskTable.name],
-                            it[TaskTable.description],
-                            Priority.valueOf(it[TaskTable.priority])
-                        )
-                    }
+                TaskTable.selectAll().where { TaskTable.user_id eq it }.map {
+                    Task(
+                        it[TaskTable.id],
+                        it[TaskTable.name],
+                        it[TaskTable.description],
+                        Priority.valueOf(it[TaskTable.priority])
+                    )
+                }
             }
         }
     }
@@ -38,25 +35,24 @@ object TaskRepository {
         return transaction {
             val userId = UserRepository.getUserId(user)
             userId?.let {
-                TaskTable
-                    .insert {
-                        it[id] = UUID.randomUUID()
-                        it[name] = task.name
-                        it[description] = task.description
-                        it[priority] = task.priority.name
-                        it[user_id] = userId
-                    }
+                TaskTable.insert {
+                    it[id] = UUID.randomUUID()
+                    it[name] = task.name
+                    it[description] = task.description
+                    it[priority] = task.priority.name
+                    it[user_id] = userId
+                }
                 true
             } ?: false
         }
     }
 
     // Method that will update the task information.
-    fun updateTask(user: User,task: Task): Boolean {
+    fun updateTask(user: User, task: Task): Boolean {
         return transaction {
             val userId = UserRepository.getUserId(user)
             userId?.let {
-                val updatedRows = TaskTable.update({TaskTable.id eq task.id}) {
+                val updatedRows = TaskTable.update({ TaskTable.id eq task.id }) {
                     it[name] = task.name
                     it[description] = task.description
                     it[priority] = task.priority.name
