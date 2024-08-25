@@ -10,7 +10,7 @@ import kotlinx.serialization.encoding.Encoder
 import java.util.*
 
 enum class Priority {
-    low, medium, high, vital
+    Low, Medium, High, Vital
 }
 
 // Object used to serialize UUID.
