@@ -21,7 +21,7 @@ object UserRepository {
     }
 
     // Method that will add register a user.
-     fun registerUser(user: User): Boolean {
+    fun registerUser(user: User): Boolean {
         return transaction {
             if (checkIfNotEmailInUse(user.email)) {
                 UserTable
