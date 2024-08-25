@@ -3,6 +3,7 @@ package com.example.models.task.model
 import com.example.models.user.model.User
 import com.example.models.user.model.UserRepository
 import com.example.tables.TaskTable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -48,4 +49,13 @@ object TaskRepository {
         }
     }
 
+    // Method that will check if a task with an id already exist.
+    private fun checkIfTaskExist(id: UUID): Boolean {
+        return transaction {
+            TaskTable
+                .select(TaskTable.id)
+                .where(TaskTable.id eq id)
+                .count() > 0
+        }
+    }
 }
