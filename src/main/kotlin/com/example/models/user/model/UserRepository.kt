@@ -1,6 +1,8 @@
 package com.example.models.user.model
 
 import com.example.tables.UserTable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
@@ -9,7 +11,7 @@ import java.util.UUID
 // Repository used to get user data from the table.
 object UserRepository {
     // Method that will check if a user with this email exist.
-    suspend fun checkIfEmailInUse(email:String): Boolean {
+    suspend fun checkIfEmailInUse(email: String): Boolean {
         return transaction {
             UserTable
                 .select(UserTable.email)
@@ -34,5 +36,20 @@ object UserRepository {
         }
 
         return true
+    }
+
+    // Method that will check the user credentials.
+    suspend fun checkUserCredentials(user: User): Boolean {
+        return transaction {
+            val hashedPassword = UserTable
+                .select(UserTable.password)
+                .where(UserTable.email eq user.email)
+                .singleOrNull()
+                ?.get(UserTable.password)
+
+            hashedPassword?.let {
+                BCrypt.checkpw(user.password, it)
+            } ?:  false
+        }
     }
 }
