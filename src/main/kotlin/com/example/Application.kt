@@ -2,6 +2,7 @@ package com.example
 
 import com.example.plugins.configureDatabase
 import com.example.plugins.configureRouting
+import com.example.plugins.configureSerialization
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -14,4 +15,5 @@ fun main() {
 fun Application.module() {
     configureDatabase()
     configureRouting()
+    configureSerialization()
 }
