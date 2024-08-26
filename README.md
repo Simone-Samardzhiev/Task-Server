@@ -2,7 +2,7 @@
 
 ## Description
 The project is a simple http server made in Ktor,
-which is a Kotlin framework for creates https servers.
+which is a Kotlin framework for creating https servers.
 
 ## Installation 
 To run the code you can clone the repository
