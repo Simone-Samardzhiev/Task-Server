@@ -41,7 +41,7 @@ object UserRepository {
     private fun checkUserCredentials(user: User): Boolean {
         return transaction {
             val foundUser = UserTable
-                .select(UserTable.email)
+                .select(UserTable.password)
                 .where(UserTable.email eq user.email)
                 .singleOrNull()
 
