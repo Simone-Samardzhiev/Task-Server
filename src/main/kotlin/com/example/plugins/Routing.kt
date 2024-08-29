@@ -35,7 +35,7 @@ fun Application.configureRouting() {
                         call.respond(
                             HttpStatusCode.Conflict,
                             ErrorResponse(
-                                HttpStatusCode.BadRequest.value,
+                                HttpStatusCode.Conflict.value,
                                 "The email is already in use."
                             )
                         )
