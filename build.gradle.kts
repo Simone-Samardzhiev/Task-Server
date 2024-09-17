@@ -36,4 +36,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("org.postgresql:postgresql:42.7.2")
+    implementation("io.ktor:ktor-server-auth-jvm:2.3.12")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm:2.3.12")
 }
