@@ -6,9 +6,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.routing.*
 
 fun Application.configureSerialization() {
-    routing {
-        install(ContentNegotiation) {
-            json()
-        }
+    install(ContentNegotiation) {
+        json()
     }
 }
