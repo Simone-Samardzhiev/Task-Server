@@ -2,6 +2,10 @@ package com.example.services
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.repositories.UserRepository
+import io.ktor.server.auth.Credential
+import io.ktor.server.auth.jwt.JWTCredential
+import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.Date
 import java.util.UUID
 
@@ -21,5 +25,21 @@ object JWTService {
             .withIssuedAt(Date())
             .withExpiresAt(Date(System.currentTimeMillis() + 60000 * 5))
             .sign(Algorithm.HMAC256(secret))
+    }
+
+    // Method that will validate the credentials of the token
+    fun validateCredentials(credential: JWTCredential): JWTPrincipal? {
+        if (credential.payload.audience.contains(audience))  {
+            val claim = credential.payload.getClaim("id").asString()
+            val id = UUID.fromString(claim)
+
+            if (UserRepository.checkIfIdExists(id)) {
+                return JWTPrincipal(credential.payload)
+            } else {
+                return null
+            }
+        } else {
+            return null
+        }
     }
 }

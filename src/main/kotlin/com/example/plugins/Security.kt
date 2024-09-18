@@ -19,11 +19,7 @@ fun Application.configureSecurity() {
                     .build()
             )
             validate { credentials ->
-                if (credentials.payload.audience.contains(JWTService.audience)) {
-                    JWTPrincipal(credentials.payload)
-                } else {
-                    null
-                }
+                JWTService.validateCredentials(credentials)
             }
         }
     }
