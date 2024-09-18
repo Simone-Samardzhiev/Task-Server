@@ -25,4 +25,13 @@ object UserService {
         UserRepository.addUser(user)
         return true
     }
+
+    // Method that will return a JWT token if the user credentials are valid
+    fun loginUser(user: User): String? {
+        val id = UserRepository.checkUserCredentials(user)
+
+        id?.let {
+            return JWTService.createToken(it)
+        } ?: return null
+    }
 }
