@@ -31,4 +31,25 @@ object UserRepository {
                 }
         }
     }
+
+    // Method that will check if user credentials are correct and return the id
+    fun checkUserCredentials(user: User): UUID? {
+        val foundUser = transaction {
+            UserTable
+                .select(UserTable.id, UserTable.password)
+                .where { UserTable.email eq user.email }
+                .singleOrNull()
+        }
+
+        if (foundUser != null) {
+            val password = foundUser[UserTable.password]
+            if (BCrypt.checkpw(password, user.password)) {
+                return foundUser[UserTable.id]
+            } else {
+                return null
+            }
+        } else {
+            return null
+        }
+    }
 }
