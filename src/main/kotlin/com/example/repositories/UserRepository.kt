@@ -52,4 +52,14 @@ object UserRepository {
             return null
         }
     }
+
+    // Method that will check if the id is valid
+    fun checkIfIdExists(id: UUID): Boolean {
+        return transaction {
+            UserTable
+                .select(UserTable.id)
+                .where{ UserTable.id eq id }
+                .empty().not()
+        }
+    }
 }
