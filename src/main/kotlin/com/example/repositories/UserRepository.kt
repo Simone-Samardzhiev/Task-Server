@@ -17,4 +17,16 @@ object UserRepository {
                 .empty()
         }
     }
+
+    // Method that will add a new user
+    fun addUser(user: User) {
+        val encryptedPassword = BCrypt.hashpw(user.password, BCrypt.gensalt())
+        transaction {
+            UserTable
+                .insert {
+                    it[UserTable.email] = user.email
+                    it[UserTable.password] = encryptedPassword
+                }
+        }
+    }
 }
