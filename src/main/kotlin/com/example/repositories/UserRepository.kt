@@ -5,6 +5,7 @@ import com.example.tables.UserTable
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
+import java.util.*
 
 // Object that will manage the data in of the users
 object UserRepository {
@@ -13,7 +14,7 @@ object UserRepository {
         return transaction {
             UserTable
                 .select(UserTable.email)
-                .where {UserTable.email eq email}
+                .where { UserTable.email eq email }
                 .empty()
         }
     }
@@ -24,6 +25,7 @@ object UserRepository {
         transaction {
             UserTable
                 .insert {
+                    it[UserTable.id] = UUID.randomUUID()
                     it[UserTable.email] = user.email
                     it[UserTable.password] = encryptedPassword
                 }
