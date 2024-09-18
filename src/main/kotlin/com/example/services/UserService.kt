@@ -8,4 +8,9 @@ object UserService {
         return email.isBlank() && email.matches(regex)
     }
 
+    // Method that will check if the password if valid.
+    private fun isValidPassword(password: String): Boolean {
+        val regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[@#$%^&+=])(?=\\\\S+\\$).{8,}$".toRegex()
+        return password.matches(regex)
+    }
 }
