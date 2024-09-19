@@ -33,4 +33,17 @@ object TaskService {
             )
         }
     }
+
+    // Method that will update a task information and if the id is not found
+    // it will return ErrorResponse
+    fun updateTask(task: Task): ErrorResponse? {
+        if (TaskRepository.updateTask(task)) {
+            return null
+        } else {
+            return ErrorResponse(
+                HttpStatusCode.NotFound.value,
+                "The tasks id could not be found",
+            )
+        }
+    }
 }
