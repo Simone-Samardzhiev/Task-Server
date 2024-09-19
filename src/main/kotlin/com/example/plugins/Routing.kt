@@ -117,6 +117,29 @@ fun Application.configureRouting() {
                         )
                     }
                 }
+                
+                delete("/{id}") {
+                    try {
+                        val stringId = call.parameters["id"]
+                        if (stringId != null) {
+                            val id = UUID.fromString(stringId)
+                            val errorRespond = TaskService.deleteTask(id)
+
+                            if (errorRespond != null) {
+                               call.respond(errorRespond)
+                            } else {
+                                call.respond(HttpStatusCode.OK)
+                            }
+                        }
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(
+                            ErrorRespond(
+                                HttpStatusCode.BadRequest.value,
+                                "The id of the task could not be found."
+                            )
+                        )
+                    }
+                }
             }
         }
     }
