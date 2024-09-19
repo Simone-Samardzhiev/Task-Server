@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 // Class used to send a message and error code
 @Serializable
-data class ErrorResponse(
+data class ErrorRespond(
     val code: Int,
     val message: String
 )
