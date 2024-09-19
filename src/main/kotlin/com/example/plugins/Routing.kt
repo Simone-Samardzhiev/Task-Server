@@ -5,6 +5,9 @@ import com.example.models.User
 import com.example.services.UserService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
+import io.ktor.server.http.content.resource
+import io.ktor.server.request.ContentTransformationException
+import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.*
 
@@ -38,6 +41,28 @@ fun Application.configureRouting() {
                         ErrorRespond(
                             HttpStatusCode.BadRequest.value,
                             "The email or password is parameter is missing."
+                        )
+                    )
+                }
+            }
+            post("/register") {
+                try {
+                    val user = call.receive<User>()
+                    if (UserService.registerUser(user)) {
+                        call.respond(HttpStatusCode.Created)
+                    } else {
+                        call.respond(
+                            ErrorRespond(
+                                HttpStatusCode.BadRequest.value,
+                                "The email or password is unavailable."
+                            )
+                        )
+                    }
+                } catch (e: ContentTransformationException) {
+                    call.respond(
+                        ErrorRespond(
+                            HttpStatusCode.BadRequest.value,
+                            "The user information could not be found in the body."
                         )
                     )
                 }
