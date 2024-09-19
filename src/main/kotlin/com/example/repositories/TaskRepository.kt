@@ -4,8 +4,11 @@ import com.example.models.Priority
 import com.example.models.Task
 import com.example.models.TaskWithoutId
 import com.example.tables.TaskTable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import java.util.UUID
 
 // Object that will manage the data of tasks
@@ -14,8 +17,7 @@ object TaskRepository {
     fun getTasks(userId: UUID): List<Task> {
         val result = mutableListOf<Task>()
         transaction {
-            TaskTable
-                .select(TaskTable.id, TaskTable.name, TaskTable.description, TaskTable.priority)
+            TaskTable.select(TaskTable.id, TaskTable.name, TaskTable.description, TaskTable.priority)
                 .where { TaskTable.user_id eq userId }
                 .map {
                     result.add(
@@ -34,13 +36,23 @@ object TaskRepository {
     // Method that will add a new task
     fun addTask(task: TaskWithoutId, userId: UUID) {
         transaction {
-            TaskTable
-                .insert {
-                    it[id] = UUID.randomUUID()
-                    it[name] = task.name
-                    it[description] = task.description
-                    it[priority] = task.priority.name
-                }
+            TaskTable.insert {
+                it[id] = UUID.randomUUID()
+                it[name] = task.name
+                it[description] = task.description
+                it[priority] = task.priority.name
+            }
+        }
+    }
+
+    // Method that will delete a task with an id.
+    fun deleteTask(id: UUID): Boolean {
+        return transaction {
+            val deletedRows = TaskTable.deleteWhere {
+                TaskTable.id eq id
+            }
+
+            deletedRows > 0
         }
     }
 }
