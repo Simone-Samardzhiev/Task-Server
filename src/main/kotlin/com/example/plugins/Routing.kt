@@ -1,16 +1,16 @@
 package com.example.plugins
 
 import com.example.models.ErrorRespond
+import com.example.models.Task
+import com.example.models.TaskWithoutId
 import com.example.models.User
 import com.example.services.TaskService
 import com.example.services.UserService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
-import io.ktor.server.auth.UserIdPrincipal
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
-import io.ktor.server.http.content.resource
 import io.ktor.server.request.ContentTransformationException
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -81,6 +81,18 @@ fun Application.configureRouting() {
                     if (principal != null) {
                         val userId = UUID.fromString(principal.payload.getClaim("id").asString())
                         call.respond(HttpStatusCode.OK, TaskService.getTasks(userId))
+                    }
+                }
+                post {
+                    try {
+                        val task = call.receive<TaskWithoutId>()
+                    } catch (e: ContentTransformationException) {
+                        call.respond(
+                            ErrorRespond(
+                                HttpStatusCode.BadRequest.value,
+                                "The details about the task could not be found in the body."
+                            )
+                        )
                     }
                 }
             }
