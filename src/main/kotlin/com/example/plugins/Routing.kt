@@ -4,6 +4,7 @@ import com.example.models.ErrorRespond
 import com.example.models.Task
 import com.example.models.TaskWithoutId
 import com.example.models.User
+import com.example.repositories.UserRepository
 import com.example.services.TaskService
 import com.example.services.UserService
 import io.ktor.http.HttpStatusCode
@@ -86,6 +87,27 @@ fun Application.configureRouting() {
                 post {
                     try {
                         val task = call.receive<TaskWithoutId>()
+                    } catch (e: ContentTransformationException) {
+                        call.respond(
+                            ErrorRespond(
+                                HttpStatusCode.BadRequest.value,
+                                "The details about the task could not be found in the body."
+                            )
+                        )
+                    }
+                }
+
+                put {
+                    try {
+                        val task = call.receive<Task>()
+                        val errorRespond = TaskService.updateTask(task)
+
+                        if (errorRespond != null) {
+                            call.respond(errorRespond)
+                        } else {
+                            call.respond(HttpStatusCode.OK)
+                        }
+
                     } catch (e: ContentTransformationException) {
                         call.respond(
                             ErrorRespond(
