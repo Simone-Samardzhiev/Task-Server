@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
 import java.util.*
 
-// Object that will manage the data in of the users
+// Object that will manage the data of the users
 object UserRepository {
     // Method that will check if an email is already in use.
     fun checkIfEmailExists(email: String): Boolean {
