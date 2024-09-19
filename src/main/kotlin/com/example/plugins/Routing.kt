@@ -2,14 +2,20 @@ package com.example.plugins
 
 import com.example.models.ErrorRespond
 import com.example.models.User
+import com.example.services.TaskService
 import com.example.services.UserService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
+import io.ktor.server.auth.UserIdPrincipal
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
 import io.ktor.server.http.content.resource
 import io.ktor.server.request.ContentTransformationException
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.*
+import java.util.UUID
 
 fun Application.configureRouting() {
     routing {
@@ -65,6 +71,17 @@ fun Application.configureRouting() {
                             "The user information could not be found in the body."
                         )
                     )
+                }
+            }
+        }
+        authenticate {
+            route("/tasks") {
+                get {
+                    val principal = call.principal<JWTPrincipal>()
+                    if (principal != null) {
+                        val userId = UUID.fromString(principal.payload.getClaim("id").asString())
+                        call.respond(HttpStatusCode.OK, TaskService.getTasks(userId))
+                    }
                 }
             }
         }
