@@ -4,7 +4,6 @@ import com.example.models.ErrorRespond
 import com.example.models.Task
 import com.example.models.TaskWithoutId
 import com.example.models.User
-import com.example.repositories.UserRepository
 import com.example.services.TaskService
 import com.example.services.UserService
 import io.ktor.http.HttpStatusCode
@@ -83,6 +82,7 @@ fun Application.configureRouting() {
                         if (principal != null) {
                             val userId = UUID.fromString(principal.payload.getClaim("id").asString())
                             TaskService.addTask(task, userId)
+                            call.respond(HttpStatusCode.OK)
                         }
                     } catch (_: ContentTransformationException) {
                         call.respond(
