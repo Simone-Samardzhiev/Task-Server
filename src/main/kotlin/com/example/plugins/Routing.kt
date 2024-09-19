@@ -65,7 +65,7 @@ fun Application.configureRouting() {
                             )
                         )
                     }
-                } catch (e: ContentTransformationException) {
+                } catch (_: ContentTransformationException) {
                     call.respond(
                         ErrorRespond(
                             HttpStatusCode.BadRequest.value,
@@ -87,7 +87,13 @@ fun Application.configureRouting() {
                 post {
                     try {
                         val task = call.receive<TaskWithoutId>()
-                    } catch (e: ContentTransformationException) {
+                        val principal = call.principal<JWTPrincipal>()
+
+                        if (principal != null) {
+                            val userId = UUID.fromString(principal.payload.getClaim("id").asString())
+                            TaskService.addTask(task, userId)
+                        }
+                    } catch (_: ContentTransformationException) {
                         call.respond(
                             ErrorRespond(
                                 HttpStatusCode.BadRequest.value,
@@ -108,7 +114,7 @@ fun Application.configureRouting() {
                             call.respond(HttpStatusCode.OK)
                         }
 
-                    } catch (e: ContentTransformationException) {
+                    } catch (_: ContentTransformationException) {
                         call.respond(
                             ErrorRespond(
                                 HttpStatusCode.BadRequest.value,
@@ -130,8 +136,15 @@ fun Application.configureRouting() {
                             } else {
                                 call.respond(HttpStatusCode.OK)
                             }
+                        } else {
+                            call.respond(
+                                ErrorRespond(
+                                    HttpStatusCode.BadRequest.value,
+                                    "The id of the task could not be found."
+                                )
+                            )
                         }
-                    } catch (e: IllegalArgumentException) {
+                    } catch (_: IllegalArgumentException) {
                         call.respond(
                             ErrorRespond(
                                 HttpStatusCode.BadRequest.value,
