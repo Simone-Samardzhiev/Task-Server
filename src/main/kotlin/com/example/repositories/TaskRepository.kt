@@ -46,10 +46,10 @@ object TaskRepository {
     }
 
     // Method that will delete a task with an id
-    fun deleteTask(id: UUID): Boolean {
+    fun deleteTask(taskId: UUID): Boolean {
         return transaction {
             val deletedRows = TaskTable.deleteWhere {
-                TaskTable.id eq id
+                TaskTable.id eq taskId
             }
 
             deletedRows > 0
