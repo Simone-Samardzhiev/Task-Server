@@ -21,17 +21,10 @@ import java.util.UUID
 fun Application.configureRouting() {
     routing {
         route("/user") {
-            get("/login/{email}/{password}") {
-                val email = call.parameters["email"]
-                val password = call.parameters["password"]
-
-                if (email != null && password != null) {
-                    val token = UserService.loginUser(
-                        User(
-                            email,
-                            password
-                        )
-                    )
+            post("/login") {
+                try {
+                    val user = call.receive<User>()
+                    val token = UserService.loginUser(user)
 
                     if (token != null) {
                         call.respond(HttpStatusCode.OK, token)
@@ -39,16 +32,14 @@ fun Application.configureRouting() {
                         call.respond(
                             ErrorRespond(
                                 HttpStatusCode.Unauthorized.value,
-                                "The email the password is wrong."
+                                "The email of the or the password is wrong"
                             )
                         )
                     }
-                } else {
+                } catch (_: ContentTransformationException) {
                     call.respond(
-                        ErrorRespond(
-                            HttpStatusCode.BadRequest.value,
-                            "The email or password is parameter is missing."
-                        )
+                        HttpStatusCode.BadRequest,
+                        "The user information could not be found in the body."
                     )
                 }
             }
