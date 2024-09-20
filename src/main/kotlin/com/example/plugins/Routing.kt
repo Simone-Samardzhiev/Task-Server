@@ -34,7 +34,8 @@ fun Application.configureRouting() {
                         call.respond(
                             HttpStatusCode.Unauthorized,
                             ErrorRespond(
-                                HttpStatusCode.Unauthorized.value, "The email of the or the password is wrong"
+                                HttpStatusCode.Unauthorized.value,
+                                "The email of the or the password is wrong"
                             )
                         )
                     }
