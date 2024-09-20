@@ -43,7 +43,7 @@ object UserRepository {
 
         if (foundUser != null) {
             val password = foundUser[UserTable.password]
-            if (BCrypt.checkpw(password, user.password)) {
+            if (BCrypt.checkpw(user.password, password)) {
                 return foundUser[UserTable.id]
             } else {
                 return null

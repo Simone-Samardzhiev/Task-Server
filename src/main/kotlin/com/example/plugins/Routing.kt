@@ -29,34 +29,31 @@ fun Application.configureRouting() {
                         call.respond(HttpStatusCode.OK, token)
                     } else {
                         call.respond(
+                            HttpStatusCode.Unauthorized,
                             ErrorRespond(
-                                HttpStatusCode.Unauthorized.value,
-                                "The email of the or the password is wrong"
+                                HttpStatusCode.Unauthorized.value, "The email of the or the password is wrong"
                             )
                         )
                     }
                 } catch (_: ContentTransformationException) {
                     call.respond(
-                        HttpStatusCode.BadRequest,
-                        "The user information could not be found in the body."
+                        HttpStatusCode.BadRequest, "The user information could not be found in the body."
                     )
                 }
             }
             post("/register") {
                 try {
                     val user = call.receive<User>()
-                    if (UserService.registerUser(user)) {
-                        call.respond(HttpStatusCode.Created)
+                    val errorRespond = UserService.registerUser(user)
+
+                    if (errorRespond != null) {
+                        call.respond(HttpStatusCode.BadRequest, errorRespond)
                     } else {
-                        call.respond(
-                            ErrorRespond(
-                                HttpStatusCode.BadRequest.value,
-                                "The email or password is unavailable."
-                            )
-                        )
+                        call.respond(HttpStatusCode.Created)
                     }
                 } catch (_: ContentTransformationException) {
                     call.respond(
+                        HttpStatusCode.BadRequest,
                         ErrorRespond(
                             HttpStatusCode.BadRequest.value,
                             "The user information could not be found in the body."
@@ -86,6 +83,7 @@ fun Application.configureRouting() {
                         }
                     } catch (_: ContentTransformationException) {
                         call.respond(
+                            HttpStatusCode.BadRequest,
                             ErrorRespond(
                                 HttpStatusCode.BadRequest.value,
                                 "The details about the task could not be found in the body."
@@ -107,6 +105,7 @@ fun Application.configureRouting() {
 
                     } catch (_: ContentTransformationException) {
                         call.respond(
+                            HttpStatusCode.BadRequest,
                             ErrorRespond(
                                 HttpStatusCode.BadRequest.value,
                                 "The details about the task could not be found in the body."
@@ -114,7 +113,7 @@ fun Application.configureRouting() {
                         )
                     }
                 }
-                
+
                 delete("/{id}") {
                     try {
                         val stringId = call.parameters["id"]
@@ -123,23 +122,23 @@ fun Application.configureRouting() {
                             val errorRespond = TaskService.deleteTask(id)
 
                             if (errorRespond != null) {
-                               call.respond(errorRespond)
+                                call.respond(errorRespond)
                             } else {
                                 call.respond(HttpStatusCode.OK)
                             }
                         } else {
                             call.respond(
+                                HttpStatusCode.BadRequest,
                                 ErrorRespond(
-                                    HttpStatusCode.BadRequest.value,
-                                    "The id of the task could not be found."
+                                    HttpStatusCode.BadRequest.value, "The id of the task could not be found."
                                 )
                             )
                         }
                     } catch (_: IllegalArgumentException) {
                         call.respond(
+                            HttpStatusCode.BadRequest,
                             ErrorRespond(
-                                HttpStatusCode.BadRequest.value,
-                                "The id of the task could not be found."
+                                HttpStatusCode.BadRequest.value, "The id of the task could not be found."
                             )
                         )
                     }
