@@ -1,4 +1,7 @@
 package com.example.services
+import com.example.exception.EmailInUseException
+import com.example.exception.InvalidEmailException
+import com.example.exception.InvalidPasswordException
 import com.example.models.ErrorRespond
 import com.example.models.User
 import com.example.repositories.UserRepository
@@ -18,30 +21,20 @@ object UserService {
     }
 
     // Method that will register a user
-    fun registerUser(user: User): ErrorRespond? {
+    fun registerUser(user: User) {
         if (!UserRepository.checkIfEmailExists(user.email)) {
-            return ErrorRespond(
-                HttpStatusCode.BadRequest.value,
-                "The email is already in use"
-            )
+            throw EmailInUseException()
         }
 
         if (!isValidEmail(user.email)) {
-            return ErrorRespond(
-                HttpStatusCode.BadRequest.value,
-                "The email cannot be blank and it must contain @"
-            )
+            throw InvalidEmailException()
         }
 
         if (!isValidPassword(user.password)) {
-            return ErrorRespond(
-                HttpStatusCode.BadRequest.value,
-                "The password doesn't pass the security requirements"
-            )
+            throw InvalidPasswordException()
         }
 
         UserRepository.addUser(user)
-        return null
     }
 
     // Method that will return a JWT token if the user credentials are valid

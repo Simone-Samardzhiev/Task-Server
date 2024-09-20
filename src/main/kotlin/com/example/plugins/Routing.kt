@@ -1,5 +1,8 @@
 package com.example.plugins
 
+import com.example.exception.EmailInUseException
+import com.example.exception.InvalidEmailException
+import com.example.exception.InvalidPasswordException
 import com.example.models.ErrorRespond
 import com.example.models.Task
 import com.example.models.TaskWithoutId
@@ -37,26 +40,49 @@ fun Application.configureRouting() {
                     }
                 } catch (_: ContentTransformationException) {
                     call.respond(
-                        HttpStatusCode.BadRequest, "The user information could not be found in the body."
+                        HttpStatusCode.BadRequest,
+                        ErrorRespond(
+                            HttpStatusCode.BadRequest.value,
+                            "The user information could not be found in the body."
+                        )
                     )
                 }
             }
             post("/register") {
                 try {
                     val user = call.receive<User>()
-                    val errorRespond = UserService.registerUser(user)
+                    UserService.registerUser(user)
 
-                    if (errorRespond != null) {
-                        call.respond(HttpStatusCode.BadRequest, errorRespond)
-                    } else {
-                        call.respond(HttpStatusCode.Created)
-                    }
                 } catch (_: ContentTransformationException) {
                     call.respond(
                         HttpStatusCode.BadRequest,
                         ErrorRespond(
                             HttpStatusCode.BadRequest.value,
                             "The user information could not be found in the body."
+                        )
+                    )
+                } catch (_: EmailInUseException) {
+                    call.respond(
+                        HttpStatusCode.Conflict,
+                        ErrorRespond(
+                            HttpStatusCode.Conflict.value,
+                            "The email is already in use"
+                        )
+                    )
+                } catch (_: InvalidEmailException) {
+                    call.respond(
+                        HttpStatusCode.NotAcceptable,
+                        ErrorRespond(
+                            HttpStatusCode.NotAcceptable.value,
+                            "The email is invalid"
+                        )
+                    )
+                } catch (_: InvalidPasswordException) {
+                    call.respond(
+                        HttpStatusCode.NotAcceptable,
+                        ErrorRespond(
+                            HttpStatusCode.NotAcceptable.value,
+                            "The password is invalid"
                         )
                     )
                 }
