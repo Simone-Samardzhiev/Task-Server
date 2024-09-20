@@ -7,6 +7,8 @@ import com.example.models.ErrorRespond
 import com.example.models.Task
 import com.example.models.TaskWithoutId
 import com.example.models.User
+import com.example.repositories.UserRepository
+import com.example.services.JWTService
 import com.example.services.TaskService
 import com.example.services.UserService
 import io.ktor.http.HttpStatusCode
@@ -169,6 +171,14 @@ fun Application.configureRouting() {
                             )
                         )
                     }
+                }
+            }
+            get("refreshToken") {
+                val principal = call.principal<JWTPrincipal>()
+
+                if (principal != null) {
+                    val userId = UUID.fromString(principal.payload.getClaim("id").asString())
+                    call.respond(HttpStatusCode.OK, JWTService.createToken(userId))
                 }
             }
         }
