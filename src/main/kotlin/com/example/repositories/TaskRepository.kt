@@ -41,6 +41,7 @@ object TaskRepository {
                 it[name] = task.name
                 it[description] = task.description
                 it[priority] = task.priority.name
+                it[user_id] = userId
             }
         }
     }
