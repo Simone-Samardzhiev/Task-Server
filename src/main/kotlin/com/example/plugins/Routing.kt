@@ -7,7 +7,6 @@ import com.example.models.ErrorRespond
 import com.example.models.Task
 import com.example.models.TaskWithoutId
 import com.example.models.User
-import com.example.repositories.UserRepository
 import com.example.services.JWTService
 import com.example.services.TaskService
 import com.example.services.UserService
@@ -55,6 +54,7 @@ fun Application.configureRouting() {
                 try {
                     val user = call.receive<User>()
                     UserService.registerUser(user)
+                    call.respond(HttpStatusCode.Created)
 
                 } catch (_: ContentTransformationException) {
                     call.respond(
@@ -127,7 +127,7 @@ fun Application.configureRouting() {
                         val errorRespond = TaskService.updateTask(task)
 
                         if (errorRespond != null) {
-                            call.respond(errorRespond)
+                            call.respond(HttpStatusCode.NotFound, errorRespond)
                         } else {
                             call.respond(HttpStatusCode.OK)
                         }

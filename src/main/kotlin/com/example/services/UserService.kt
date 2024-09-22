@@ -11,7 +11,8 @@ import io.ktor.http.HttpStatusCode
 object UserService {
     // Method that will check if the email is valid.
     private fun isValidEmail(email: String): Boolean {
-        return !email.isBlank() || !email.contains("@")
+        val regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Z|a-z]{2,}\$".toRegex()
+        return email.matches(regex)
     }
 
     // Method that will check if the password is valid.
