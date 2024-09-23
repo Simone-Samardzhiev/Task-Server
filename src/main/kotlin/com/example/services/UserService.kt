@@ -2,16 +2,15 @@ package com.example.services
 import com.example.exception.EmailInUseException
 import com.example.exception.InvalidEmailException
 import com.example.exception.InvalidPasswordException
-import com.example.models.ErrorRespond
 import com.example.models.User
 import com.example.repositories.UserRepository
-import io.ktor.http.HttpStatusCode
 
 // Service that will manage the users
 object UserService {
     // Method that will check if the email is valid.
     private fun isValidEmail(email: String): Boolean {
-        val regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Z|a-z]{2,}\$".toRegex()
+        val regex = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+\$".toRegex()
+        print("simone@gmail.com".matches(regex))
         return email.matches(regex)
     }
 
