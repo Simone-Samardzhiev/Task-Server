@@ -16,6 +16,7 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
 import io.ktor.server.request.ContentTransformationException
+import io.ktor.server.request.queryString
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.*
@@ -143,9 +144,9 @@ fun Application.configureRouting() {
                     }
                 }
 
-                delete("/{id}") {
+                delete {
                     try {
-                        val stringId = call.parameters["id"]
+                        val stringId = call.request.queryParameters["id"]
                         if (stringId != null) {
                             val id = UUID.fromString(stringId)
                             val errorRespond = TaskService.deleteTask(id)
