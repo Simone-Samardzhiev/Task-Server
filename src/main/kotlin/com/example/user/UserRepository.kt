@@ -1,7 +1,9 @@
 package com.example.user
 
+import org.jetbrains.exposed.sql.Select
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.mindrot.jbcrypt.BCrypt
 import java.util.UUID
 
 // User repository that will manage the data of the users
@@ -25,5 +27,19 @@ object UserRepository : UserRepositoryInterface {
                 it[password] = user.password
             }
         }
+    }
+
+    // Method used to check user credentials
+    override suspend fun checkUser(user: User): Boolean {
+        val foundUser = transaction {
+            UserTable
+                .select(UserTable.email, UserTable.password)
+                .where { UserTable.email eq user.email }
+                .singleOrNull()
+        }
+
+        foundUser?.let {
+            return BCrypt.checkpw(user.password, it[UserTable.password])
+        } ?: return false
     }
 }
