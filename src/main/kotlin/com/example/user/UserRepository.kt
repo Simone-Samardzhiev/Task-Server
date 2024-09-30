@@ -29,17 +29,21 @@ object UserRepository : UserRepositoryInterface {
         }
     }
 
-    // Method used to check user credentials
-    override suspend fun checkUser(user: User): Boolean {
+    // Method used to check user credentials or return the user id if they are correct
+    override suspend fun checkUser(user: User): UUID? {
         val foundUser = transaction {
             UserTable
-                .select(UserTable.email, UserTable.password)
+                .select(UserTable.id, UserTable.password)
                 .where { UserTable.email eq user.email }
                 .singleOrNull()
         }
 
         foundUser?.let {
-            return BCrypt.checkpw(user.password, it[UserTable.password])
-        } ?: return false
+            return if (BCrypt.checkpw(user.password, it[UserTable.password])) {
+                it[UserTable.id];
+            } else {
+                null
+            }
+        } ?: return null
     }
 }

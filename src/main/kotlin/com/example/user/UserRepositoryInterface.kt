@@ -8,6 +8,6 @@ interface UserRepositoryInterface {
     suspend fun checkEmail(email: String): Boolean
     // Method used to add a new user
     suspend fun createUser(user: User)
-    // Method used to check user credentials
-    suspend fun checkUser(user: User): Boolean
+    // Method used to check user credentials or return the user id if they are correct
+    suspend fun checkUser(user: User): UUID?
 }
