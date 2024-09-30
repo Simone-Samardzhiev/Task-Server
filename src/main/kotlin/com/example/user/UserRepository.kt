@@ -24,7 +24,7 @@ object UserRepository : UserRepositoryInterface {
             UserTable.insert {
                 it[id] = UUID.randomUUID()
                 it[email] = user.email
-                it[password] = user.password
+                it[password] = BCrypt.hashpw(user.password, BCrypt.gensalt())
             }
         }
     }
