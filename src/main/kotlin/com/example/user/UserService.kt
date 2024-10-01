@@ -1,10 +1,9 @@
 package com.example.user
 
-import com.auth0.jwt.JWT
 import com.example.jwt.JWTUserService
 
 // Service used to manage the data of the users
-object UserService: UserServiceInterface {
+object UserService : UserServiceInterface {
     // Method that will check for valid email syntax
     override suspend fun validateEmail(email: String): Boolean {
         val regex = "^[\\w._%+0-]+@[\\w._-]+\\.[a-zA-Z]{2,}$".toRegex()

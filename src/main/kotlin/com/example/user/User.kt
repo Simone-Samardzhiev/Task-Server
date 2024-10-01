@@ -3,4 +3,4 @@ package com.example.user
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class User(val email: String,val password: String)
+data class User(val email: String, val password: String)
