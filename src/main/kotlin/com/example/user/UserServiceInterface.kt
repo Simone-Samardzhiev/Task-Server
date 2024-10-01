@@ -6,4 +6,6 @@ interface UserServiceInterface {
     suspend fun validateEmail(email: String): Boolean
     // Method that will check if a password is secure enough
     suspend fun validatePassword(password: String): Boolean
+    // Method that will add a new user
+    suspend fun addUser(user: User)
 }

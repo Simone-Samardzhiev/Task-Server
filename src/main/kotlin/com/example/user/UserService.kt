@@ -13,4 +13,19 @@ object UserService: UserServiceInterface {
         val regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]{8,}$".toRegex()
         return password.matches(regex)
     }
+
+    // Method that will add a new user
+    override suspend fun addUser(user: User) {
+        if (UserRepository.checkEmail(user.email)) {
+            throw EmailInUserError()
+        }
+
+        if (!validateEmail(user.email)) {
+            throw EmailInUserError()
+        }
+
+        if (!validatePassword(user.password)) {
+            throw InvalidPasswordError()
+        }
+    }
 }
