@@ -10,4 +10,6 @@ interface UserRepositoryInterface {
     suspend fun createUser(user: User)
     // Method used to check user credentials or return the user id if they are correct
     suspend fun checkUserCredentials(user: User): UUID?
+    // Method that will check if the user id is valid
+    suspend fun checkUserId(userId: UUID): Boolean
 }

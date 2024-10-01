@@ -1,6 +1,5 @@
 package com.example.user
 
-import org.jetbrains.exposed.sql.Select
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
@@ -45,5 +44,15 @@ object UserRepository : UserRepositoryInterface {
                 null
             }
         } ?: return null
+    }
+
+    // Method that will check if the user id is valid
+    override suspend fun checkUserId(userId: UUID): Boolean {
+        return transaction {
+            UserTable
+                .select(UserTable.id)
+                .where { UserTable.id eq userId }
+                .count() > 0
+        }
     }
 }
