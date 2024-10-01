@@ -30,7 +30,7 @@ object UserRepository : UserRepositoryInterface {
     }
 
     // Method used to check user credentials or return the user id if they are correct
-    override suspend fun checkUser(user: User): UUID? {
+    override suspend fun checkUserCredentials(user: User): UUID? {
         val foundUser = transaction {
             UserTable
                 .select(UserTable.id, UserTable.password)
