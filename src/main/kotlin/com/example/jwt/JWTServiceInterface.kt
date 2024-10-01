@@ -1,6 +1,7 @@
 package com.example.jwt
 
-import com.example.user.User
+import io.ktor.server.auth.jwt.JWTCredential
+import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.UUID
 
 // Interface used to create JWT service
@@ -16,4 +17,6 @@ interface JWTServiceInterface {
 
     // Method used to create token
     suspend fun generateToken(userId: UUID): String
+    // Method used to check the JWT credentials
+    suspend fun validateCredentials(credentials: JWTCredential): JWTPrincipal?
 }
