@@ -5,6 +5,7 @@ import com.example.user.InvalidEmailError
 import com.example.user.InvalidPasswordError
 import com.example.user.User
 import com.example.user.UserService
+import com.example.user.UserServiceInterface
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
@@ -15,13 +16,13 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 
-fun Application.configureRouting() {
+fun Application.configureRouting(userService: UserServiceInterface) {
     routing {
         route("/users") {
             post("/register") {
                 try {
                     val user = call.receive<User>()
-                    UserService.addUser(user)
+                    userService.addUser(user)
                 } catch (_: ContentTransformationException) {
                     call.respond(
                         HttpStatusCode.BadRequest,

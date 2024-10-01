@@ -1,8 +1,11 @@
 package com.example
 
 
+import com.example.jwt.JWTUserService
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
+import com.example.user.UserRepository
+import com.example.user.UserService
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -13,6 +16,9 @@ fun main() {
 }
 
 fun Application.module() {
-    configureRouting()
+    val userRepository = UserRepository()
+    val jwtUserService = JWTUserService(userRepository)
+    val userService = UserService(userRepository, jwtUserService)
     configureSerialization()
+    configureRouting(userService)
 }

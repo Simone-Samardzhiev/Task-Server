@@ -6,7 +6,7 @@ import org.mindrot.jbcrypt.BCrypt
 import java.util.UUID
 
 // User repository that will manage the data of the users
-object UserRepository : UserRepositoryInterface {
+open class UserRepository : UserRepositoryInterface {
     // Method used to check if an email exist
     override suspend fun checkEmail(email: String): Boolean {
         return transaction {

@@ -2,14 +2,16 @@ package com.example.jwt
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.example.user.UserRepository
+import com.example.user.UserRepositoryInterface
 import io.ktor.server.auth.jwt.JWTCredential
 import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.Date
 import java.util.UUID
 
 // Service used to create JWT tokens
-object JWTUserService : JWTServiceInterface {
+class JWTUserService(
+    val userRepository: UserRepositoryInterface,
+) : JWTUserServiceInterface {
     // The secret used to hash the token
     override val secret = System.getenv("secret") ?: throw RuntimeException("Missing secret!")
 
@@ -40,7 +42,7 @@ object JWTUserService : JWTServiceInterface {
             val claim = credentials.payload.getClaim("id").asString()
             val id = UUID.fromString(claim)
 
-            return if (UserRepository.checkUserId(id)) {
+            return if (userRepository.checkUserId(id)) {
                 JWTPrincipal(credentials.payload)
             } else {
                 null

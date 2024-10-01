@@ -5,7 +5,7 @@ import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.UUID
 
 // Interface used to create JWT service
-interface JWTServiceInterface {
+interface JWTUserServiceInterface {
     // The secret used to hash the token
     val secret: String
 

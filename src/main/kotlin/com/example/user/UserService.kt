@@ -1,9 +1,13 @@
 package com.example.user
 
 import com.example.jwt.JWTUserService
+import com.example.jwt.JWTUserServiceInterface
 
 // Service used to manage the data of the users
-object UserService : UserServiceInterface {
+class UserService(
+    val userRepository: UserRepositoryInterface,
+    val jwtUserService: JWTUserServiceInterface
+) : UserServiceInterface {
     // Method that will check for valid email syntax
     override suspend fun validateEmail(email: String): Boolean {
         val regex = "^[\\w._%+0-]+@[\\w._-]+\\.[a-zA-Z]{2,}$".toRegex()
@@ -18,7 +22,7 @@ object UserService : UserServiceInterface {
 
     // Method that will add a new user
     override suspend fun addUser(user: User) {
-        if (UserRepository.checkEmail(user.email)) {
+        if (userRepository.checkEmail(user.email)) {
             throw EmailInUserError()
         }
 
@@ -29,14 +33,16 @@ object UserService : UserServiceInterface {
         if (!validatePassword(user.password)) {
             throw InvalidPasswordError()
         }
+
+        userRepository.createUser(user)
     }
 
     // Method that will crete a token for a user
     override suspend fun getToken(user: User): String {
-        val userId = UserRepository.checkUserCredentials(user)
+        val userId = userRepository.checkUserCredentials(user)
 
         userId?.let {
-            return JWTUserService.generateToken(it)
+            return jwtUserService.generateToken(it)
         } ?: throw WrongCredentialsError()
     }
 }
