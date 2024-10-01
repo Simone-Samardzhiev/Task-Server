@@ -6,3 +6,5 @@ class EmailInUserError() : RuntimeException()
 class InvalidEmailError() : RuntimeException()
 // Error thrown when the password in invalid
 class InvalidPasswordError() : RuntimeException()
+// Error throw when a user try to register and the credentials are wrong
+class WrongCredentialsError() : RuntimeException()

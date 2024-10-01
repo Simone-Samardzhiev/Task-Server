@@ -1,5 +1,8 @@
 package com.example.user
 
+import com.auth0.jwt.JWT
+import com.example.jwt.JWTUserService
+
 // Service used to manage the data of the users
 object UserService: UserServiceInterface {
     // Method that will check for valid email syntax
@@ -27,5 +30,14 @@ object UserService: UserServiceInterface {
         if (!validatePassword(user.password)) {
             throw InvalidPasswordError()
         }
+    }
+
+    // Method that will crete a token for a user
+    override suspend fun getToken(user: User): String {
+        val userId = UserRepository.checkUserCredentials(user)
+
+        userId?.let {
+            return JWTUserService.generateToken(it)
+        } ?: throw WrongCredentialsError()
     }
 }

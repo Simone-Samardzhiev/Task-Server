@@ -8,4 +8,6 @@ interface UserServiceInterface {
     suspend fun validatePassword(password: String): Boolean
     // Method that will add a new user
     suspend fun addUser(user: User)
+    // Method that will crete a token for a user
+    suspend fun getToken(user: User): String
 }
