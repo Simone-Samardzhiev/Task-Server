@@ -24,7 +24,7 @@ object UserService: UserServiceInterface {
         }
 
         if (!validateEmail(user.email)) {
-            throw EmailInUserError()
+            throw InvalidEmailError()
         }
 
         if (!validatePassword(user.password)) {
