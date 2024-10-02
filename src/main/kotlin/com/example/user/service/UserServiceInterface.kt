@@ -1,7 +1,17 @@
-package com.example.user
+package com.example.user.service
+
+import com.example.user.User
+import com.example.user.jwt.JWTUserServiceInterface
+import com.example.user.repository.UserRepositoryInterface
 
 // Interface used to create user service
 interface UserServiceInterface {
+    // The user repository
+    val userRepository: UserRepositoryInterface
+
+    // The JWT user service
+    val jwtUserService: JWTUserServiceInterface
+
     // Method that will check for valid email syntax
     suspend fun validateEmail(email: String): Boolean
 

@@ -1,5 +1,6 @@
-package com.example.user
+package com.example.user.repository
 
+import com.example.user.User
 import java.util.UUID
 
 // Interface used to create user repository

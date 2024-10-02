@@ -1,12 +1,17 @@
-package com.example.user
+package com.example.user.service
 
-import com.example.jwt.JWTUserService
-import com.example.jwt.JWTUserServiceInterface
+import com.example.user.EmailInUserError
+import com.example.user.InvalidEmailError
+import com.example.user.InvalidPasswordError
+import com.example.user.User
+import com.example.user.WrongCredentialsError
+import com.example.user.jwt.JWTUserServiceInterface
+import com.example.user.repository.UserRepositoryInterface
 
 // Service used to manage the data of the users
 class UserService(
-    val userRepository: UserRepositoryInterface,
-    val jwtUserService: JWTUserServiceInterface
+    override val userRepository: UserRepositoryInterface,
+    override val jwtUserService: JWTUserServiceInterface
 ) : UserServiceInterface {
     // Method that will check for valid email syntax
     override suspend fun validateEmail(email: String): Boolean {

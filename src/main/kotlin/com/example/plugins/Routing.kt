@@ -4,8 +4,7 @@ import com.example.user.EmailInUserError
 import com.example.user.InvalidEmailError
 import com.example.user.InvalidPasswordError
 import com.example.user.User
-import com.example.user.UserService
-import com.example.user.UserServiceInterface
+import com.example.user.service.UserServiceInterface
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call

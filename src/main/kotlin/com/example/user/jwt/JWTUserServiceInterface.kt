@@ -1,11 +1,15 @@
-package com.example.jwt
+package com.example.user.jwt
 
+import com.example.user.repository.UserRepositoryInterface
 import io.ktor.server.auth.jwt.JWTCredential
 import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.UUID
 
 // Interface used to create JWT service
 interface JWTUserServiceInterface {
+    // Repository of the user
+    val userRepository: UserRepositoryInterface
+
     // The secret used to hash the token
     val secret: String
 

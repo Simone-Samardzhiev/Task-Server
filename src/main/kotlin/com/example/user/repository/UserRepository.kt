@@ -1,5 +1,7 @@
-package com.example.user
+package com.example.user.repository
 
+import com.example.user.User
+import com.example.user.UserTable
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
@@ -39,7 +41,7 @@ open class UserRepository : UserRepositoryInterface {
 
         foundUser?.let {
             return if (BCrypt.checkpw(user.password, it[UserTable.password])) {
-                it[UserTable.id];
+                it[UserTable.id]
             } else {
                 null
             }

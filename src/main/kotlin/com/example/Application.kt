@@ -1,11 +1,11 @@
 package com.example
 
 
-import com.example.jwt.JWTUserService
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
-import com.example.user.UserRepository
-import com.example.user.UserService
+import com.example.user.jwt.JWTUserService
+import com.example.user.repository.UserRepository
+import com.example.user.service.UserService
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
