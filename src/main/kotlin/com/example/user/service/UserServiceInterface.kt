@@ -1,6 +1,6 @@
 package com.example.user.service
 
-import com.example.user.User
+import com.example.user.model.User
 import com.example.user.jwt.JWTUserServiceInterface
 import com.example.user.repository.UserRepositoryInterface
 

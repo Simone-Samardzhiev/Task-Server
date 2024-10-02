@@ -1,4 +1,4 @@
-package com.example.user
+package com.example.user.table
 
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table

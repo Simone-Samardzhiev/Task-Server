@@ -1,4 +1,4 @@
-package com.example.user
+package com.example.user.error
 
 // Error throws when an email is already in use
 class EmailInUserError() : RuntimeException()

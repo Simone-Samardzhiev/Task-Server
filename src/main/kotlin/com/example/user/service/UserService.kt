@@ -1,10 +1,10 @@
 package com.example.user.service
 
-import com.example.user.EmailInUserError
-import com.example.user.InvalidEmailError
-import com.example.user.InvalidPasswordError
-import com.example.user.User
-import com.example.user.WrongCredentialsError
+import com.example.user.error.EmailInUserError
+import com.example.user.error.InvalidEmailError
+import com.example.user.error.InvalidPasswordError
+import com.example.user.model.User
+import com.example.user.error.WrongCredentialsError
 import com.example.user.jwt.JWTUserServiceInterface
 import com.example.user.repository.UserRepositoryInterface
 

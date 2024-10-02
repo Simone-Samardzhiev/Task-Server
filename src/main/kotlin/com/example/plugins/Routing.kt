@@ -1,9 +1,9 @@
 package com.example.plugins
 
-import com.example.user.EmailInUserError
-import com.example.user.InvalidEmailError
-import com.example.user.InvalidPasswordError
-import com.example.user.User
+import com.example.user.error.EmailInUserError
+import com.example.user.error.InvalidEmailError
+import com.example.user.error.InvalidPasswordError
+import com.example.user.model.User
 import com.example.user.service.UserServiceInterface
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
