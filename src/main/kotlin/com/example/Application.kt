@@ -1,6 +1,7 @@
 package com.example
 
 
+import com.example.plugins.configureDatabase
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
 import com.example.user.jwt.JWTUserService
@@ -20,5 +21,6 @@ fun Application.module() {
     val jwtUserService = JWTUserService(userRepository)
     val userService = UserService(userRepository, jwtUserService)
     configureSerialization()
+    configureDatabase()
     configureRouting(userService)
 }
