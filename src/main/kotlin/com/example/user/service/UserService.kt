@@ -21,7 +21,7 @@ class UserService(
 
     // Method that will check if a password is secure enough
     override suspend fun validatePassword(password: String): Boolean {
-        val regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]{8,}$".toRegex()
+        val regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[_@$!%*?&#])[A-Za-z\\d_@$!%*?&#]{8,}$".toRegex()
         return password.matches(regex)
     }
 
