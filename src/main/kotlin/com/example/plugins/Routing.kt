@@ -3,6 +3,7 @@ package com.example.plugins
 import com.example.user.error.EmailInUserError
 import com.example.user.error.InvalidEmailError
 import com.example.user.error.InvalidPasswordError
+import com.example.user.error.WrongCredentialsError
 import com.example.user.model.User
 import com.example.user.service.UserServiceInterface
 import io.ktor.http.HttpStatusCode
@@ -42,6 +43,24 @@ fun Application.configureRouting(userService: UserServiceInterface) {
                     call.respond(
                         HttpStatusCode.BadRequest,
                         "The password is invalid."
+                    )
+                }
+            }
+
+            post("/login") {
+                try {
+                    val user = call.receive<User>()
+                    val token = userService.getToken(user)
+                    call.respond(HttpStatusCode.OK, token)
+                } catch (_: ContentTransformationException) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        "The information from the json body could not be found."
+                    )
+                } catch (_: WrongCredentialsError) {
+                    call.respond(
+                        HttpStatusCode.Unauthorized,
+                        "Wrong credentials."
                     )
                 }
             }
