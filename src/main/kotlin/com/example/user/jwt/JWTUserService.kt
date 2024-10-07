@@ -44,4 +44,9 @@ class JWTUserService(
             null
         }
     }
+
+    override suspend fun refreshToken(principal: JWTPrincipal): String {
+        val id = UUID.fromString(principal.payload.getClaim("id").asString())
+        return generateToken(id)
+    }
 }

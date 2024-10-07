@@ -32,4 +32,10 @@ interface JWTUserServiceInterface {
      * @return The principle if the credentials are correct otherwise null.
      */
     suspend fun validateCredentials(credentials: JWTCredential): JWTPrincipal?
+
+    /**
+     * Method used to refresh a token.
+     * @param principal The JWT principle.
+     */
+    suspend fun refreshToken(principal: JWTPrincipal): String
 }
