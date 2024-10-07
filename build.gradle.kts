@@ -34,6 +34,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
+    testImplementation("io.ktor:ktor-client-content-negotiation:2.1.1")
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("org.postgresql:postgresql:42.7.2")
     implementation("io.ktor:ktor-server-auth-jvm:2.3.12")
