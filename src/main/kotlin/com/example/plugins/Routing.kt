@@ -23,7 +23,10 @@ fun Application.configureRouting(userService: UserServiceInterface) {
                 try {
                     val user = call.receive<User>()
                     userService.addUser(user)
-                    call.respond(HttpStatusCode.OK)
+                    call.respond(
+                        HttpStatusCode.OK,
+                        "User successfully registered."
+                    )
                 } catch (_: ContentTransformationException) {
                     call.respond(
                         HttpStatusCode.BadRequest,
