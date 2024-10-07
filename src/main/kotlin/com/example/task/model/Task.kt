@@ -12,14 +12,23 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
-// Class used to set priority to the tasks
+/**
+ * Class used to create the priority of a task.
+ * This enumeration define 4 types of priority
+ * - Low
+ * - Medium
+ * - High
+ * - Vital
+ */
 enum class Priority {
     Low, Medium, High, Vital
 }
 
-// Object used to serialize LocalDate
+/**
+ * Object used to serialize LocalDate
+ * @property formatter The format of the date
+ */
 object LocalDateSerializer : KSerializer<LocalDate> {
-    // The formatter of the date
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("LocalDate", PrimitiveKind.STRING)
 
@@ -32,7 +41,10 @@ object LocalDateSerializer : KSerializer<LocalDate> {
     }
 }
 
-// Object used to serialize LocalDateTime
+/**
+ * Object used to serialize LocalDateTime
+ * @property formatter The format of the date
+ */
 object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
     // The formatter of the date
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
@@ -47,7 +59,10 @@ object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
     }
 }
 
-// Object used to serialize UUID
+
+/**
+ * Object used to serialize UUID
+ */
 object UUIDSerializer : KSerializer<UUID> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
 
@@ -60,7 +75,16 @@ object UUIDSerializer : KSerializer<UUID> {
     }
 }
 
-// Class used to store task
+/**
+ * Class used to create task
+ * @property id The id of the task
+ * @property name The name of the task
+ * @property description The description of the task
+ * @property priority The priority of the task
+ * @property dueDate The date till the task have to be completed
+ * @property dateDeleted The date when the task was deleted
+ * @property dateCompleted The date when the task was completed
+ */
 @Serializable
 data class Task(
     @Serializable(with = UUIDSerializer::class)
@@ -76,7 +100,15 @@ data class Task(
     val dateCompleted: LocalDate,
 )
 
-// Class used to create task without id
+/**
+ * Class used to create task without id
+ * @property name The name of the task
+ * @property description The description of the task
+ * @property priority The priority of the task
+ * @property dueDate The date till the task have to be completed
+ * @property dateDeleted The date when the task was deleted
+ * @property dateCompleted The date when the task was completed
+ */
 @Serializable
 data class TaskWithoutId(
     val name: String,
