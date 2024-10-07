@@ -14,7 +14,7 @@ import java.util.UUID
 
 /**
  * Class used to create the priority of a task.
- * This enumeration define 4 types of priority
+ * This enumeration define 4 types of priority:
  * - Low
  * - Medium
  * - High
@@ -25,8 +25,8 @@ enum class Priority {
 }
 
 /**
- * Object used to serialize LocalDate
- * @property formatter The format of the date
+ * Object used to serialize LocalDate.
+ * @property formatter The format of the date.
  */
 object LocalDateSerializer : KSerializer<LocalDate> {
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
@@ -42,8 +42,8 @@ object LocalDateSerializer : KSerializer<LocalDate> {
 }
 
 /**
- * Object used to serialize LocalDateTime
- * @property formatter The format of the date
+ * Object used to serialize LocalDateTime.
+ * @property formatter The format of the date.
  */
 object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
     // The formatter of the date
@@ -61,7 +61,7 @@ object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
 
 
 /**
- * Object used to serialize UUID
+ * Object used to serialize UUID.
  */
 object UUIDSerializer : KSerializer<UUID> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
@@ -76,14 +76,14 @@ object UUIDSerializer : KSerializer<UUID> {
 }
 
 /**
- * Class used to create task
- * @property id The id of the task
- * @property name The name of the task
- * @property description The description of the task
- * @property priority The priority of the task
- * @property dueDate The date till the task have to be completed
- * @property dateDeleted The date when the task was deleted
- * @property dateCompleted The date when the task was completed
+ * Class used to create task.
+ * @property id The id of the task.
+ * @property name The name of the task.
+ * @property description The description of the task.
+ * @property priority The priority of the task.
+ * @property dueDate The date till the task have to be completed.
+ * @property dateDeleted The date when the task was deleted.
+ * @property dateCompleted The date when the task was completed.
  */
 @Serializable
 data class Task(
