@@ -5,26 +5,31 @@ import io.ktor.server.auth.jwt.JWTCredential
 import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.UUID
 
-// Interface used to create JWT service
+/**
+ * Interface used to create JWT service.
+ * @property userRepository The user repository.
+ * @property secret The secret used to hash the tokens.
+ * @property audience The audience that will use the token.
+ * @property issuer The issuer who created the token.
+ * @property realm The that stores the scope of authentication.
+ */
 interface JWTUserServiceInterface {
-    // Repository of the user
     val userRepository: UserRepositoryInterface
-
-    // The secret used to hash the token
     val secret: String
-
-    // The audience that will use the token
     val audience: String
-
-    // The issuer who created the token
     val issuer: String
-
-    // The realm that stores the scope of authentication
     val realm: String
 
-    // Method used to create token
+    /**
+     *  Function used to create a token for a user.
+     *  @param userId The id if the user.
+     *  @return The generated JWT as a string
+     */
     suspend fun generateToken(userId: UUID): String
-
-    // Method used to check the JWT credentials
+    /**
+     * Function used to validate the credentials of a token.
+     * @param credentials The credential of the token.
+     * @return The principle if the credentials are correct otherwise null.
+     */
     suspend fun validateCredentials(credentials: JWTCredential): JWTPrincipal?
 }

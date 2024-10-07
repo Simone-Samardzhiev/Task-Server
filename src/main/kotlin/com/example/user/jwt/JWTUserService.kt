@@ -8,23 +8,17 @@ import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.Date
 import java.util.UUID
 
-// Service used to create JWT tokens
 class JWTUserService(
     override val userRepository: UserRepositoryInterface,
 ) : JWTUserServiceInterface {
-    // The secret used to hash the token
     override val secret = System.getenv("secret") ?: throw RuntimeException("Missing secret!")
 
-    // The audience that will use the token
     override val audience = "Task-App-Client"
 
-    // The issuer who created the token
     override val issuer: String = "http://localhost:8080"
 
-    // The realm that stores the scope of authentication
     override val realm: String = "Task-App"
 
-    // Method used to create token
     override suspend fun generateToken(userId: UUID): String {
         return JWT
             .create()
@@ -36,7 +30,6 @@ class JWTUserService(
             .sign(Algorithm.HMAC256(secret))
     }
 
-    // Method used to check the JWT credentials
     override suspend fun validateCredentials(credentials: JWTCredential): JWTPrincipal? {
         return if (credentials.payload.audience.contains(audience) && credentials.payload.issuer.equals(issuer)) {
             val claim = credentials.payload.getClaim("id").asString()
