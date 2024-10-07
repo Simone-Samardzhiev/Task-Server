@@ -3,6 +3,7 @@ package com.example
 
 import com.example.plugins.configureDatabase
 import com.example.plugins.configureRouting
+import com.example.plugins.configureSecurity
 import com.example.plugins.configureSerialization
 import com.example.user.jwt.JWTUserService
 import com.example.user.repository.UserRepository
@@ -23,4 +24,5 @@ fun Application.module() {
     configureSerialization()
     configureDatabase()
     configureRouting(userService)
+    configureSecurity(jwtUserService)
 }
