@@ -4,7 +4,12 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import java.util.UUID
 
-// Table used to get data about users
+/**
+ * Object used to manage the users table.
+ * @param id The id of the user.
+ * @param email The email of the user.
+ * @param password The password of the user.
+ */
 object UserTable : Table("users") {
     val id: Column<UUID> = uuid("id")
     val email: Column<String> = varchar("email", 255).uniqueIndex()
