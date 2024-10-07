@@ -1,13 +1,21 @@
 package com.example.user.error
 
-// Error throws when an email is already in use
+/**
+ * Error thrown when the email of the user is already in use.
+ */
 class EmailInUserError() : RuntimeException()
 
-// Error throws when an email is invalid
+/**
+ * Error thrown when the syntax of the email is invalid
+ */
 class InvalidEmailError() : RuntimeException()
 
-// Error thrown when the password in invalid
+/**
+ * Error thrown when the password is not secure enough.
+ */
 class InvalidPasswordError() : RuntimeException()
 
-// Error throw when a user try to register and the credentials are wrong
+/**
+ *  Error thrown when the user credentials are wrong.
+ */
 class WrongCredentialsError() : RuntimeException()
