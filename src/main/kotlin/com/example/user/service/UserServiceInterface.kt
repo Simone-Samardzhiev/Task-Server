@@ -3,6 +3,7 @@ package com.example.user.service
 import com.example.user.model.User
 import com.example.user.jwt.JWTUserServiceInterface
 import com.example.user.repository.UserRepositoryInterface
+import io.ktor.server.auth.jwt.JWTPrincipal
 
 // Interface used to create user service
 interface UserServiceInterface {
@@ -23,4 +24,7 @@ interface UserServiceInterface {
 
     // Method that will crete a token for a user
     suspend fun getToken(user: User): String
+
+    // Method that will create a new token using a previous one
+    suspend fun refreshToken(principal: JWTPrincipal): String
 }

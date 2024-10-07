@@ -7,6 +7,8 @@ import com.example.user.model.User
 import com.example.user.error.WrongCredentialsError
 import com.example.user.jwt.JWTUserServiceInterface
 import com.example.user.repository.UserRepositoryInterface
+import io.ktor.server.auth.jwt.JWTPrincipal
+import java.util.UUID
 
 // Service used to manage the data of the users
 class UserService(
@@ -49,5 +51,11 @@ class UserService(
         userId?.let {
             return jwtUserService.generateToken(it)
         } ?: throw WrongCredentialsError()
+    }
+
+    // Method that will create a new token using a previous one
+    override suspend fun refreshToken(principal: JWTPrincipal): String {
+        val id = UUID.fromString(principal.payload.getClaim("id").asString())
+        return jwtUserService.generateToken(id)
     }
 }
