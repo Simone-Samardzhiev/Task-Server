@@ -189,8 +189,8 @@ class ApplicationTest {
             contentType(ContentType.Application.Json)
             setBody(validUser)
         }.apply {
-            print(bodyAsText())
             assertEquals(HttpStatusCode.OK, status)
+            assertEquals("User successfully registered.", bodyAsText())
         }
     }
 
@@ -268,6 +268,37 @@ class ApplicationTest {
         }.apply {
             assertEquals(HttpStatusCode.BadRequest, status)
             assertEquals("The information from the json body could not be found.", bodyAsText())
+        }
+    }
+
+    @Test
+    fun testWrongCredentialsLogin() = testApplication {
+        createEnvironment()
+        val client = createClient()
+
+        val user = User("wrong@gmail.com", "wrong_password")
+
+        client.post("users/login") {
+            contentType(ContentType.Application.Json)
+            setBody(user)
+        }.apply {
+            assertEquals(HttpStatusCode.Unauthorized, status)
+            assertEquals("Wrong credentials.", bodyAsText())
+        }
+    }
+
+    @Test
+    fun testSuccessfulLogin() = testApplication {
+        createEnvironment()
+        val client = createClient()
+
+        val user = User("simone@gmail.com", "Simone_2006")
+        client.post("users/register") {
+            contentType(ContentType.Application.Json)
+            setBody(user)
+        }.apply {
+            assertEquals(HttpStatusCode.OK, status)
+            print(bodyAsText())
         }
     }
 }
