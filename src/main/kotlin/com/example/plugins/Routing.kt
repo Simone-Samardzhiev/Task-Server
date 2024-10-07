@@ -22,7 +22,7 @@ import io.ktor.server.routing.routing
 
 /**
  * Extension function that will set the routing of the server.
- * */
+ */
 fun Application.configureRouting(userService: UserServiceInterface) {
     routing {
         // Route for users

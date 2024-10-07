@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
  * Extension function that will connect to the database and create the missing tables.
- * */
+ */
 fun Application.configureDatabase() {
     // Connecting to the database
     Database.connect(
