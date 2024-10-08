@@ -27,4 +27,11 @@ interface TaskRepositoryInterface {
      * @return True if a task was updated otherwise false.
      */
     suspend fun updateTask(task: Task): Boolean
+
+    /**
+     * Method that will delete an existing task.
+     * @param task The task that will be deleted.
+     * @return True if the task was deleted otherwise false.
+     */
+    suspend fun deleteTask(task: Task): Boolean
 }

@@ -3,11 +3,13 @@ package com.example.task.model.repository
 import com.example.task.model.Priority
 import com.example.task.model.Task
 import com.example.task.table.TaskTable
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.util.UUID
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class TaskRepository : TaskRepositoryInterface {
     override suspend fun getTasksByUserId(userId: UUID): List<Task> {
@@ -55,6 +57,17 @@ class TaskRepository : TaskRepositoryInterface {
                 }
 
             updatedRows == 1
+        }
+    }
+
+    override suspend fun deleteTask(task: Task): Boolean {
+        return transaction {
+            val deletedRows = TaskTable
+                .deleteWhere {
+                    id eq task.id
+                }
+
+            deletedRows == 1
         }
     }
 }
