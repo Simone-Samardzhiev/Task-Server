@@ -42,7 +42,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                         "User successfully registered."
                     )
                 } catch (_: ContentTransformationException) {
-                    // Response if the user information couldn't be got from the body
+                    // Response if the user information couldn't be read from the body
                     call.respond(
                         HttpStatusCode.BadRequest,
                         "The information from the json body could not be found."
@@ -78,7 +78,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                     // Response if the token was created successfully
                     call.respond(HttpStatusCode.OK, token)
                 } catch (_: ContentTransformationException) {
-                    // Response if the user information couldn't be got from the body
+                    // Response if the user information couldn't be read from the body
                     call.respond(
                         HttpStatusCode.BadRequest,
                         "The information from the json body could not be found."
@@ -95,7 +95,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
             authenticate {
                 // Method used to refresh a valid token.
                 get("/refreshToken") {
-                    // Getting the principle
+                    // Getting the principal
                     val principal = call.principal<JWTPrincipal>()
 
                     principal?.let {
@@ -106,7 +106,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                         )
                     } ?: call.respond( // Response if the token couldn't be found
                         HttpStatusCode.Unauthorized,
-                        "The JWT token could not be found."
+                        "The JWT could not be found."
                     )
                 }
             }
@@ -114,8 +114,8 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
         authenticate {
             // Route for tasks
             route("/tasks") {
+                // Method used to get all tasks of a user
                 get {
-                    // Method used to get all tasks of a user
                     val principal = call.principal<JWTPrincipal>()
 
                     principal?.let {
@@ -124,9 +124,32 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                             HttpStatusCode.OK,
                             taskService.getTasks(it)
                         )
-                    }?: call.respond( // Response if the token couldn't be found
+                    } ?: call.respond( // Response if the token couldn't be found
                         HttpStatusCode.Unauthorized,
-                        "The JWT token could not be found."
+                        "The JWT could not be found."
+                    )
+                }
+                post {
+                    // Getting the principal
+                    val principal = call.principal<JWTPrincipal>()
+
+                    principal?.let {
+                        try {
+                            // Getting the task
+                            val task = call.receive<TaskWithoutId>()
+                            taskService.addTask(task, it)
+                            // Response if the task was added.
+                            call.respond(HttpStatusCode.OK)
+                        } catch (_: ContentTransformationException) {
+                            // Response if the task information couldn't be read
+                            call.respond(
+                                HttpStatusCode.BadRequest,
+                                "The information from the json body could not be found."
+                            )
+                        }
+                    } ?: call.respond( // Response if the token couldn't be found
+                        HttpStatusCode.Unauthorized,
+                        "The JWT could not be found."
                     )
                 }
             }
