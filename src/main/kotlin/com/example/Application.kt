@@ -5,6 +5,8 @@ import com.example.plugins.configureDatabase
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSecurity
 import com.example.plugins.configureSerialization
+import com.example.task.repository.TaskRepository
+import com.example.task.service.TaskService
 import com.example.user.jwt.JWTUserService
 import com.example.user.repository.UserRepository
 import com.example.user.service.UserService
@@ -21,8 +23,10 @@ fun Application.module() {
     val userRepository = UserRepository()
     val jwtUserService = JWTUserService(userRepository)
     val userService = UserService(userRepository, jwtUserService)
+    val taskRepository = TaskRepository()
+    val taskService = TaskService(taskRepository)
     configureSerialization()
     configureDatabase()
-    configureRouting(userService)
+    configureRouting(userService, taskService)
     configureSecurity(jwtUserService)
 }

@@ -1,5 +1,6 @@
 package com.example.plugins
 
+import com.example.task.service.TaskServiceInterface
 import com.example.user.error.EmailInUserError
 import com.example.user.error.InvalidEmailError
 import com.example.user.error.InvalidPasswordError
@@ -23,7 +24,7 @@ import io.ktor.server.routing.routing
 /**
  * Extension function that will set the routing of the server.
  */
-fun Application.configureRouting(userService: UserServiceInterface) {
+fun Application.configureRouting(userService: UserServiceInterface, taskService: TaskServiceInterface) {
     routing {
         // Route for users
         route("/users") {
