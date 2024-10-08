@@ -4,11 +4,15 @@ import com.example.task.error.TaskIdNotFoundError
 import com.example.task.model.Task
 import com.example.task.model.TaskWithoutId
 import com.example.task.repository.TaskRepositoryInterface
+import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.UUID
 
 
 class TaskService(override val taskRepository: TaskRepositoryInterface) : TaskServiceInterface {
-    override suspend fun getTasks(userId: UUID): List<Task> = taskRepository.getTasksByUserId(userId)
+    override suspend fun getTasks(principal: JWTPrincipal): List<Task> {
+        val id = UUID.fromString(principal.payload.getClaim("id").toString())
+        return taskRepository.getTasksByUserId(id)
+    }
     override suspend fun addTask(task: TaskWithoutId, userId: UUID) {
         val task = Task(
             id = UUID.randomUUID(),

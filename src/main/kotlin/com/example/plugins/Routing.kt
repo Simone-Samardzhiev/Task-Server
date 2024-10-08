@@ -101,12 +101,25 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                         // Response with the new token
                         call.respond(
                             HttpStatusCode.OK,
-                            userService.jwtUserService.refreshToken(principal)
+                            userService.jwtUserService.refreshToken(it)
                         )
                     } ?: call.respond( // Response if the token couldn't be found
                         HttpStatusCode.Unauthorized,
                         "The JWT token could not be found."
                     )
+                }
+            }
+        }
+        authenticate {
+            route("/tasks") {
+                get {
+                    val principal = call.principal<JWTPrincipal>()
+
+                    principal?.let {
+                        call.respond(
+                            HttpStatusCode.OK,
+                        )
+                    }
                 }
             }
         }

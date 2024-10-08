@@ -3,6 +3,7 @@ package com.example.task.service
 import com.example.task.model.Task
 import com.example.task.model.TaskWithoutId
 import com.example.task.repository.TaskRepositoryInterface
+import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.UUID
 
 /**
@@ -14,10 +15,10 @@ interface TaskServiceInterface {
 
     /**
      * Method that will get all tasks that belongs to a user.
-     * @param userId The user id.
+     * @param principal The JWT principal.
      * @return List of the task that where retrieved.
      */
-    suspend fun getTasks(userId: UUID): List<Task>
+    suspend fun getTasks(principal: JWTPrincipal): List<Task>
 
     /**
      * Method that will add a new task.
