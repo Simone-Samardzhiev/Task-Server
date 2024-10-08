@@ -4,7 +4,6 @@ import com.example.task.model.Task
 import com.example.task.model.TaskWithoutId
 import com.example.task.repository.TaskRepositoryInterface
 import io.ktor.server.auth.jwt.JWTPrincipal
-import java.util.UUID
 
 /**
  * Interface used to create task service.
