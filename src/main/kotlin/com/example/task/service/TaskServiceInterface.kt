@@ -23,8 +23,9 @@ interface TaskServiceInterface {
     /**
      * Method that will add a new task.
      * @param task The task that will be added.
+     * @param principal The JWT principal.
      */
-    suspend fun addTask(task: TaskWithoutId, userId: UUID)
+    suspend fun addTask(task: TaskWithoutId, principal: JWTPrincipal)
 
     /**
      * Method that will update an existing task.
