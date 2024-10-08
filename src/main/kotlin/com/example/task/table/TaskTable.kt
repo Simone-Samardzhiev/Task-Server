@@ -1,5 +1,6 @@
 package com.example.task.table
 
+import com.example.user.table.UserTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.date
@@ -27,6 +28,6 @@ object TaskTable : Table("tasks") {
     val dueDate: Column<LocalDateTime> = datetime("due_date")
     val dateCompleted: Column<LocalDate> = date("date_completed")
     val dateDeleted: Column<LocalDate> = date("date_deleted")
-    val userId: Column<UUID> = reference("user_id", id).uniqueIndex()
+    val userId: Column<UUID> = reference("user_id", UserTable.id).uniqueIndex()
     override val primaryKey: PrimaryKey = PrimaryKey(id)
 }

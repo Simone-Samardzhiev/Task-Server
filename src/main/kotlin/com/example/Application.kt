@@ -26,9 +26,9 @@ fun Application.module() {
     val userService = UserService(userRepository, jwtUserService)
     val taskRepository = TaskRepository()
     val taskService = TaskService(taskRepository)
+    configureSecurity(jwtUserService)
     configureSerialization()
     configureDatabase()
     configureRouting(userService, taskService)
-    configureSecurity(jwtUserService)
     configureTasks()
 }
