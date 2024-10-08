@@ -1,5 +1,7 @@
 package com.example.task.service
 
+import com.example.user.repository.UserRepositoryInterface
 
-class TaskService: TaskServiceInterface {
+
+class TaskService(override val userRepository: UserRepositoryInterface): TaskServiceInterface {
 }
