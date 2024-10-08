@@ -1,5 +1,6 @@
 package com.example.plugins
 
+import com.example.task.model.TaskWithoutId
 import com.example.task.service.TaskServiceInterface
 import com.example.user.error.EmailInUserError
 import com.example.user.error.InvalidEmailError
@@ -111,16 +112,19 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
             }
         }
         authenticate {
+            // Route for tasks
             route("/tasks") {
                 get {
+                    // Method used to get all tasks of a user
                     val principal = call.principal<JWTPrincipal>()
 
                     principal?.let {
+                        // Response with the tasks
                         call.respond(
                             HttpStatusCode.OK,
                             taskService.getTasks(it)
                         )
-                    }?: call.respond(
+                    }?: call.respond( // Response if the token couldn't be found
                         HttpStatusCode.Unauthorized,
                         "The JWT token could not be found."
                     )
