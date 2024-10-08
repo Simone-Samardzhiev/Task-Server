@@ -118,8 +118,12 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                     principal?.let {
                         call.respond(
                             HttpStatusCode.OK,
+                            taskService.getTasks(it)
                         )
-                    }
+                    }?: call.respond(
+                        HttpStatusCode.Unauthorized,
+                        "The JWT token could not be found."
+                    )
                 }
             }
         }
