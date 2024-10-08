@@ -1,4 +1,4 @@
-package com.example.task.model.repository
+package com.example.task.repository
 
 import com.example.task.model.Priority
 import com.example.task.model.Task
