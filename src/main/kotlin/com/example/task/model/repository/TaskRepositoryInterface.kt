@@ -1,7 +1,6 @@
 package com.example.task.model.repository
 
 import com.example.task.model.Task
-import java.sql.SQLException
 import java.util.UUID
 
 /**
@@ -14,4 +13,11 @@ interface TaskRepositoryInterface {
      * @return Array of the tasks.
      */
     suspend fun getTasksByUserId(userId: UUID): List<Task>
+
+    /**
+     * Method that will add a new task.
+     * @param task The task that will be added.
+     * @param userId The user id who own the task.
+     */
+    suspend fun addTask(task: Task, userId: UUID)
 }
