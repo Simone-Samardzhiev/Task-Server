@@ -1,5 +1,7 @@
 package com.example.plugins
 
+import com.example.task.error.TaskIdNotFoundError
+import com.example.task.model.Task
 import com.example.task.model.TaskWithoutId
 import com.example.task.service.TaskServiceInterface
 import com.example.user.error.EmailInUserError
@@ -19,6 +21,7 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 
@@ -149,6 +152,35 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                         }
                     } ?: call.respond( // Response if the token couldn't be found
                         HttpStatusCode.Unauthorized,
+                        "The JWT could not be found."
+                    )
+                }
+
+                put {
+                    // Getting the principal
+                    val principal = call.principal<JWTPrincipal>()
+
+                    principal?.let {
+                        try {
+                            val task = call.receive<Task>()
+                            taskService.updateTask(task)
+                            // Response if the task was updated
+                            call.respond(HttpStatusCode.OK)
+                        } catch(_: ContentTransformationException) {
+                            // Response if the token information couldn't be read
+                            call.respond(
+                                HttpStatusCode.BadRequest,
+                                "The information from the json body could not be found."
+                            )
+                        } catch (_: TaskIdNotFoundError) {
+                            // Response if the id of the task doesn't exist
+                            call.respond(
+                                HttpStatusCode.BadRequest,
+                                "The task id is not found."
+                            )
+                        }
+                    } ?: call.respond(
+                        HttpStatusCode.Unauthorized, // Response if the token couldn't be found
                         "The JWT could not be found."
                     )
                 }
