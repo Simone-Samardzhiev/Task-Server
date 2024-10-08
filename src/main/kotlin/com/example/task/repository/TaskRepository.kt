@@ -40,6 +40,7 @@ class TaskRepository : TaskRepositoryInterface {
                 it[dueDate] = task.dueDate
                 it[dateDeleted] = task.dateDeleted
                 it[dateCompleted] = task.dateCompleted
+                it[TaskTable.userId] = userId
             }
         }
     }
