@@ -20,4 +20,11 @@ interface TaskRepositoryInterface {
      * @param userId The user id who own the task.
      */
     suspend fun addTask(task: Task, userId: UUID)
+
+    /**
+     * Method that will update an existing task.
+     * @param task The task that will be updated.
+     * @return True if a task was updated otherwise false.
+     */
+    suspend fun updateTask(task: Task): Boolean
 }

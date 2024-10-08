@@ -3,19 +3,19 @@ package com.example.task.model.repository
 import com.example.task.model.Priority
 import com.example.task.model.Task
 import com.example.task.table.TaskTable
-import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import java.util.UUID
 
-class TaskRepository: TaskRepositoryInterface {
+class TaskRepository : TaskRepositoryInterface {
     override suspend fun getTasksByUserId(userId: UUID): List<Task> {
         return transaction {
             TaskTable.selectAll()
                 .where { TaskTable.userId eq userId }
                 .map {
-                    Task (
+                    Task(
                         id = it[TaskTable.id],
                         name = it[TaskTable.name],
                         description = it[TaskTable.description],
@@ -39,6 +39,22 @@ class TaskRepository: TaskRepositoryInterface {
                 it[dateDeleted] = task.dateDeleted
                 it[dateCompleted] = task.dateCompleted
             }
+        }
+    }
+
+    override suspend fun updateTask(task: Task): Boolean {
+        return transaction {
+            val updatedRows = TaskTable
+                .update({ TaskTable.id eq task.id }) {
+                    it[name] = task.name
+                    it[description] = task.description
+                    it[priority] = task.priority.name
+                    it[dueDate] = task.dueDate
+                    it[dateDeleted] = task.dateDeleted
+                    it[dateCompleted] = task.dateCompleted
+                }
+
+            updatedRows == 1
         }
     }
 }
