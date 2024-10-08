@@ -5,6 +5,7 @@ import com.example.plugins.configureDatabase
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSecurity
 import com.example.plugins.configureSerialization
+import com.example.plugins.configureTasks
 import com.example.task.repository.TaskRepository
 import com.example.task.service.TaskService
 import com.example.user.jwt.JWTUserService
@@ -29,4 +30,5 @@ fun Application.module() {
     configureDatabase()
     configureRouting(userService, taskService)
     configureSecurity(jwtUserService)
+    configureTasks()
 }

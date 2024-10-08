@@ -40,4 +40,5 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.2")
     implementation("io.ktor:ktor-server-auth-jvm:2.3.12")
     implementation("io.ktor:ktor-server-auth-jwt-jvm:2.3.12")
+    implementation("org.quartz-scheduler:quartz:2.3.2")
 }
