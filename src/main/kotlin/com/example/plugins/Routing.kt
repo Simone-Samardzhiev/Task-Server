@@ -19,6 +19,7 @@ import io.ktor.server.auth.principal
 import io.ktor.server.plugins.ContentTransformationException
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
@@ -166,7 +167,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                             taskService.updateTask(task)
                             // Response if the task was updated
                             call.respond(HttpStatusCode.OK)
-                        } catch(_: ContentTransformationException) {
+                        } catch (_: ContentTransformationException) {
                             // Response if the token information couldn't be read
                             call.respond(
                                 HttpStatusCode.BadRequest,
@@ -176,11 +177,39 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                             // Response if the id of the task doesn't exist
                             call.respond(
                                 HttpStatusCode.BadRequest,
-                                "The task id is not found."
+                                "The task id couldn't not found."
                             )
                         }
                     } ?: call.respond(
                         HttpStatusCode.Unauthorized, // Response if the token couldn't be found
+                        "The JWT could not be found."
+                    )
+                }
+                delete {
+                    // Getting the principal
+                    val principal = call.principal<JWTPrincipal>()
+
+                    principal?.let {
+                        try {
+                            val task = call.receive<Task>()
+                            taskService.deleteTask(task)
+                            // Response if the task was deleted
+                            call.respond(HttpStatusCode.OK)
+                        } catch (_: ContentTransformationException) {
+                            // Response if the task information couldn't be read
+                            call.respond(
+                                HttpStatusCode.BadRequest,
+                                "The information from the json body could not be found."
+                            )
+                        } catch (_: TaskIdNotFoundError) {
+                            // Response if the task id doesn't exist
+                            call.respond(
+                                HttpStatusCode.BadRequest,
+                                "The task id couldn't not found."
+                            )
+                        }
+                    } ?: call.respond( // Response if the token couldn't be found
+                        HttpStatusCode.Unauthorized,
                         "The JWT could not be found."
                     )
                 }
