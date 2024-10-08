@@ -3,7 +3,6 @@ package com.example.task.service
 import com.example.task.model.Task
 import com.example.task.model.TaskWithoutId
 import com.example.task.repository.TaskRepositoryInterface
-import com.example.user.repository.UserRepositoryInterface
 import java.util.UUID
 
 /**
@@ -25,4 +24,10 @@ interface TaskServiceInterface {
      * @param task The task that will be added.
      */
     suspend fun addTask(task: TaskWithoutId, userId: UUID)
+
+    /**
+     * Method that will update an existing task.
+     * @param task The task that will be updated.
+     */
+    suspend fun updateTask(task: Task)
 }

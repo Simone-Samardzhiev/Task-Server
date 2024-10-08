@@ -1,5 +1,6 @@
 package com.example.task.service
 
+import com.example.task.error.TaskIdNotFoundError
 import com.example.task.model.Task
 import com.example.task.model.TaskWithoutId
 import com.example.task.repository.TaskRepositoryInterface
@@ -20,5 +21,17 @@ class TaskService(override val taskRepository: TaskRepositoryInterface) : TaskSe
         )
 
         taskRepository.addTask(task, userId)
+    }
+
+
+    /**
+     * Method that will update an existing task.
+     * @param task The task that will be updated.
+     * @throws TaskIdNotFoundError When the task id couldn't be found.
+     */
+    override suspend fun updateTask(task: Task) {
+        if (!taskRepository.updateTask(task)) {
+            throw TaskIdNotFoundError()
+        }
     }
 }
