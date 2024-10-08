@@ -34,4 +34,16 @@ class TaskService(override val taskRepository: TaskRepositoryInterface) : TaskSe
             throw TaskIdNotFoundError()
         }
     }
+
+
+    /**
+     * Method that will delete an existing task.
+     * @param task The task that will be deleted.
+     * @throws TaskIdNotFoundError When the task ud couldn't be found.
+     */
+    override suspend fun deleteTask(task: Task) {
+        if (!taskRepository.deleteTask(task)) {
+            throw TaskIdNotFoundError()
+        }
+    }
 }

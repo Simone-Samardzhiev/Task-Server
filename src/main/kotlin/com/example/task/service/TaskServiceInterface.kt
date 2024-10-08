@@ -30,4 +30,10 @@ interface TaskServiceInterface {
      * @param task The task that will be updated.
      */
     suspend fun updateTask(task: Task)
+
+    /**
+     * Method that will delete an existing task.
+     * @param task The task that will be deleted.
+     */
+    suspend fun deleteTask(task: Task)
 }
