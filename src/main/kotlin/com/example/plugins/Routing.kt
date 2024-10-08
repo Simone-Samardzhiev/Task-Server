@@ -101,7 +101,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                         // Response with the new token
                         call.respond(
                             HttpStatusCode.OK,
-                            userService.refreshToken(principal)
+                            userService.jwtUserService.refreshToken(principal)
                         )
                     } ?: call.respond( // Response if the token couldn't be found
                         HttpStatusCode.Unauthorized,
