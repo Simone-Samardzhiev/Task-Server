@@ -26,8 +26,8 @@ object TaskTable : Table("tasks") {
     val description: Column<String> = varchar("description", 50)
     val priority: Column<String> = varchar("priority", 50)
     val dueDate: Column<LocalDateTime> = datetime("due_date")
-    val dateCompleted: Column<LocalDate> = date("date_completed")
-    val dateDeleted: Column<LocalDate> = date("date_deleted")
+    val dateCompleted: Column<LocalDate?> = date("date_completed").nullable()
+    val dateDeleted: Column<LocalDate?> = date("date_deleted").nullable()
     val userId: Column<UUID> = reference("user_id", UserTable.id).uniqueIndex()
     override val primaryKey: PrimaryKey = PrimaryKey(id)
 }

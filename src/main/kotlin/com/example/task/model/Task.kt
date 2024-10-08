@@ -95,9 +95,9 @@ data class Task(
     @Serializable(with = LocalDateTimeSerializer::class)
     val dueDate: LocalDateTime,
     @Serializable(with = LocalDateSerializer::class)
-    val dateDeleted: LocalDate,
+    val dateDeleted: LocalDate?,
     @Serializable(with = LocalDateSerializer::class)
-    val dateCompleted: LocalDate,
+    val dateCompleted: LocalDate?,
 )
 
 /**
@@ -106,18 +106,12 @@ data class Task(
  * @property description The description of the task
  * @property priority The priority of the task
  * @property dueDate The date till the task have to be completed
- * @property dateDeleted The date when the task was deleted
- * @property dateCompleted The date when the task was completed
  */
 @Serializable
-data class TaskWithoutId(
+data class NewTask(
     val name: String,
     val description: String,
     val priority: Priority,
     @Serializable(with = LocalDateTimeSerializer::class)
     val dueDate: LocalDateTime,
-    @Serializable(with = LocalDateSerializer::class)
-    val dateDeleted: LocalDate,
-    @Serializable(with = LocalDateSerializer::class)
-    val dateCompleted: LocalDate
 )

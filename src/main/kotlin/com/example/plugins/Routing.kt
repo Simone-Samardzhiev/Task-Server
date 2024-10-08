@@ -2,7 +2,7 @@ package com.example.plugins
 
 import com.example.task.error.TaskIdNotFoundError
 import com.example.task.model.Task
-import com.example.task.model.TaskWithoutId
+import com.example.task.model.NewTask
 import com.example.task.service.TaskServiceInterface
 import com.example.user.error.EmailInUserError
 import com.example.user.error.InvalidEmailError
@@ -140,7 +140,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                     principal?.let {
                         try {
                             // Getting the task
-                            val task = call.receive<TaskWithoutId>()
+                            val task = call.receive<NewTask>()
                             taskService.addTask(task, it)
                             // Response if the task was added.
                             call.respond(HttpStatusCode.OK)

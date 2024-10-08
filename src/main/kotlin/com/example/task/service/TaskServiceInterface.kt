@@ -1,7 +1,7 @@
 package com.example.task.service
 
 import com.example.task.model.Task
-import com.example.task.model.TaskWithoutId
+import com.example.task.model.NewTask
 import com.example.task.repository.TaskRepositoryInterface
 import io.ktor.server.auth.jwt.JWTPrincipal
 
@@ -24,7 +24,7 @@ interface TaskServiceInterface {
      * @param task The task that will be added.
      * @param principal The JWT principal.
      */
-    suspend fun addTask(task: TaskWithoutId, principal: JWTPrincipal)
+    suspend fun addTask(task: NewTask, principal: JWTPrincipal)
 
     /**
      * Method that will update an existing task.
