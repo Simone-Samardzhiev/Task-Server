@@ -14,7 +14,7 @@ class TaskService(override val taskRepository: TaskRepositoryInterface) : TaskSe
         return taskRepository.getTasksByUserId(id)
     }
     override suspend fun addTask(task: NewTask, principal: JWTPrincipal) {
-        val id = UUID.fromString(principal.payload.getClaim("id").toString())
+        val id = UUID.fromString(principal.payload.getClaim("id").asString())
         val task = Task(
             id = UUID.randomUUID(),
             name = task.name,
