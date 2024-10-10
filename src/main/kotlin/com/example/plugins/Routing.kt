@@ -176,8 +176,8 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                         } catch (_: TaskIdNotFoundError) {
                             // Response if the id of the task doesn't exist
                             call.respond(
-                                HttpStatusCode.BadRequest,
-                                "The task id couldn't not found."
+                                HttpStatusCode.NotFound,
+                                "The task id couldn't be found."
                             )
                         }
                     } ?: call.respond(
@@ -204,8 +204,8 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                         } catch (_: TaskIdNotFoundError) {
                             // Response if the task id doesn't exist
                             call.respond(
-                                HttpStatusCode.BadRequest,
-                                "The task id couldn't not found."
+                                HttpStatusCode.NotFound,
+                                "The task id couldn't be found."
                             )
                         }
                     } ?: call.respond( // Response if the token couldn't be found
