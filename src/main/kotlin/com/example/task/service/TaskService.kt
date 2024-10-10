@@ -10,7 +10,7 @@ import java.util.UUID
 
 class TaskService(override val taskRepository: TaskRepositoryInterface) : TaskServiceInterface {
     override suspend fun getTasks(principal: JWTPrincipal): List<Task> {
-        val id = UUID.fromString(principal.payload.getClaim("id").toString())
+        val id = UUID.fromString(principal.payload.getClaim("id").asString())
         return taskRepository.getTasksByUserId(id)
     }
     override suspend fun addTask(task: NewTask, principal: JWTPrincipal) {
