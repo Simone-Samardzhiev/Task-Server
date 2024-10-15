@@ -28,6 +28,6 @@ object TaskTable : Table("tasks") {
     val dueDate: Column<LocalDateTime> = datetime("due_date")
     val dateCompleted: Column<LocalDate?> = date("date_completed").nullable()
     val dateDeleted: Column<LocalDate?> = date("date_deleted").nullable()
-    val userId: Column<UUID> = reference("user_id", UserTable.id).uniqueIndex()
+    val userId: Column<UUID> = reference("user_id", UserTable.id)
     override val primaryKey: PrimaryKey = PrimaryKey(id)
 }
