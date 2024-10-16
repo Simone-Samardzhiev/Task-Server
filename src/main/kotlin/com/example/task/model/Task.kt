@@ -25,23 +25,6 @@ enum class Priority {
 }
 
 /**
- * Object used to serialize LocalDate.
- * @property formatter The format of the date.
- */
-object LocalDateSerializer : KSerializer<LocalDate> {
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("LocalDate", PrimitiveKind.STRING)
-
-    override fun serialize(encoder: Encoder, value: LocalDate) {
-        encoder.encodeString(value.format(formatter))
-    }
-
-    override fun deserialize(decoder: Decoder): LocalDate {
-        return LocalDate.parse(decoder.decodeString(), formatter)
-    }
-}
-
-/**
  * Object used to serialize LocalDateTime.
  * @property formatter The format of the date.
  */
@@ -94,10 +77,10 @@ data class Task(
     val priority: Priority,
     @Serializable(with = LocalDateTimeSerializer::class)
     val dueDate: LocalDateTime,
-    @Serializable(with = LocalDateSerializer::class)
-    val dateDeleted: LocalDate?,
-    @Serializable(with = LocalDateSerializer::class)
-    val dateCompleted: LocalDate?,
+    @Serializable(with = LocalDateTimeSerializer::class)
+    val dateDeleted: LocalDateTime?,
+    @Serializable(with = LocalDateTimeSerializer::class)
+    val dateCompleted: LocalDateTime?,
 )
 
 /**

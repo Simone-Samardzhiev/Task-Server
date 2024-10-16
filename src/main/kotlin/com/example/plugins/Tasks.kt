@@ -13,6 +13,7 @@ import org.quartz.JobExecutionContext
 import org.quartz.TriggerBuilder
 import org.quartz.impl.StdSchedulerFactory
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 /**
  * Job that will be executed to delete all task that have been deleted by the user for
@@ -20,7 +21,7 @@ import java.time.LocalDate
  */
 class DeleteTasksJob : Job {
     override fun execute(p0: JobExecutionContext?) {
-        val thirtyDayAgo = LocalDate.now().minusDays(30)
+        val thirtyDayAgo = LocalDateTime.now().minusDays(30)
         transaction {
             TaskTable
                 .deleteWhere {
