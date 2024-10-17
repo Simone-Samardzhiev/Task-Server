@@ -1,8 +1,8 @@
-package com.example.task.service
+package com.example.task.services
 
-import com.example.task.model.Task
-import com.example.task.model.NewTask
-import com.example.task.repository.TaskRepositoryInterface
+import com.example.task.models.Task
+import com.example.task.models.NewTask
+import com.example.task.repositories.TaskRepositoryInterface
 import io.ktor.server.auth.jwt.JWTPrincipal
 
 /**

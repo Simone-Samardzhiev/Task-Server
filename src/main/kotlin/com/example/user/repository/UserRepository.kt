@@ -1,7 +1,7 @@
 package com.example.user.repository
 
-import com.example.user.model.User
-import com.example.user.table.UserTable
+import com.example.user.models.User
+import com.example.user.tables.UserTable
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt

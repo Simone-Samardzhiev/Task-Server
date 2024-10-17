@@ -1,6 +1,6 @@
 package com.example.plugins
 
-import com.example.task.table.TaskTable
+import com.example.task.tables.TaskTable
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStopping
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
@@ -12,7 +12,6 @@ import org.quartz.JobBuilder
 import org.quartz.JobExecutionContext
 import org.quartz.TriggerBuilder
 import org.quartz.impl.StdSchedulerFactory
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 /**

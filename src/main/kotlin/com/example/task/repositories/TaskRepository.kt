@@ -1,8 +1,8 @@
-package com.example.task.repository
+package com.example.task.repositories
 
-import com.example.task.model.Priority
-import com.example.task.model.Task
-import com.example.task.table.TaskTable
+import com.example.task.models.Priority
+import com.example.task.models.Task
+import com.example.task.tables.TaskTable
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll

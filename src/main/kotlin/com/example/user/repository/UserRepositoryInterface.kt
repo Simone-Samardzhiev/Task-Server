@@ -1,6 +1,6 @@
 package com.example.user.repository
 
-import com.example.user.model.User
+import com.example.user.models.User
 import java.util.UUID
 
 /**

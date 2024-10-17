@@ -1,4 +1,4 @@
-package com.example.task.error
+package com.example.task.errors
 
 /**
  * Error thrown when the task id couldn't be found.

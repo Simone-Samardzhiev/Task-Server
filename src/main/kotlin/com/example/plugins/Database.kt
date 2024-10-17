@@ -1,7 +1,7 @@
 package com.example.plugins
 
-import com.example.task.table.TaskTable
-import com.example.user.table.UserTable
+import com.example.task.tables.TaskTable
+import com.example.user.tables.UserTable
 import io.ktor.server.application.Application
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils

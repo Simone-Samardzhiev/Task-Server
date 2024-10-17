@@ -1,4 +1,4 @@
-package com.example.task.model
+package com.example.task.models
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -7,7 +7,6 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID

@@ -1,11 +1,9 @@
-package com.example.task.table
+package com.example.task.tables
 
-import com.example.user.table.UserTable
+import com.example.user.tables.UserTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.javatime.date
 import org.jetbrains.exposed.sql.javatime.datetime
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 

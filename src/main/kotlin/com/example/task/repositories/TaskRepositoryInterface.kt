@@ -1,6 +1,6 @@
-package com.example.task.repository
+package com.example.task.repositories
 
-import com.example.task.model.Task
+import com.example.task.models.Task
 import java.util.UUID
 
 /**

@@ -1,4 +1,4 @@
-package com.example.user.error
+package com.example.user.errors
 
 /**
  * Error thrown when the email of the user is already in use.
