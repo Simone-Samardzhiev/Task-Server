@@ -1,13 +1,8 @@
 package com.example.plugins
 
-import com.example.task.errors.TaskIdNotFoundError
-import com.example.task.models.Task
 import com.example.task.models.NewTask
+import com.example.task.models.Task
 import com.example.task.services.TaskServiceInterface
-import com.example.user.errors.EmailInUserError
-import com.example.user.errors.InvalidEmailError
-import com.example.user.errors.InvalidPasswordError
-import com.example.user.errors.WrongCredentialsError
 import com.example.user.models.User
 import com.example.user.services.UserServiceInterface
 import io.ktor.http.HttpStatusCode
@@ -34,53 +29,25 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
         route("/users") {
             // Method used to register a user.
             post("/register") {
-                try {
-                    // Getting the user from the body
-                    val user = call.receive<User>()
-                    // Registering the user
-                    userService.addUser(user)
-                    // Response if the registration was successfully
-                    call.respond(
-                        HttpStatusCode.OK,
-                        "User successfully registered."
-                    )
-                } catch (_: EmailInUserError) {
-                    // Response if the email is already in use.
-                    call.respond(
-                        HttpStatusCode.Conflict,
-                        "The email is already in use."
-                    )
-                } catch (_: InvalidEmailError) {
-                    // Response if the email syntax is invalid
-                    call.respond(
-                        HttpStatusCode.BadRequest,
-                        "The email is invalid."
-                    )
-                } catch (_: InvalidPasswordError) {
-                    // Response if the password is not strong enough
-                    call.respond(
-                        HttpStatusCode.BadRequest,
-                        "The password is invalid."
-                    )
-                }
+                // Getting the user from the body
+                val user = call.receive<User>()
+                // Registering the user
+                userService.addUser(user)
+                // Response if the registration was successfully
+                call.respond(
+                    HttpStatusCode.OK,
+                    "User successfully registered."
+                )
             }
 
             // Method used to log in that will return a JWT
             post("/login") {
-                try {
-                    // Getting the user information
-                    val user = call.receive<User>()
-                    // Creating the token for the user
-                    val token = userService.getToken(user)
-                    // Response if the token was created successfully
-                    call.respond(HttpStatusCode.OK, token)
-                } catch (_: WrongCredentialsError) {
-                    // Response if the user credentials are wrong
-                    call.respond(
-                        HttpStatusCode.Unauthorized,
-                        "Wrong credentials."
-                    )
-                }
+                // Getting the user information
+                val user = call.receive<User>()
+                // Creating the token for the user
+                val token = userService.getToken(user)
+                // Response if the token was created successfully
+                call.respond(HttpStatusCode.OK, token)
             }
 
             authenticate {
@@ -132,37 +99,20 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                     val principal = call.principal<JWTPrincipal>()
 
                     principal?.let {
-                        try {
-                            val task = call.receive<Task>()
-                            taskService.updateTask(task)
-                            // Response if the task was updated
-                            call.respond(HttpStatusCode.OK)
-                        } catch (_: TaskIdNotFoundError) {
-                            // Response if the id of the task doesn't exist
-                            call.respond(
-                                HttpStatusCode.NotFound,
-                                "The task id couldn't be found."
-                            )
-                        }
+                        val task = call.receive<Task>()
+                        taskService.updateTask(task)
+                        // Response if the task was updated
+                        call.respond(HttpStatusCode.OK)
                     }
                 }
                 delete {
                     // Getting the principal
                     val principal = call.principal<JWTPrincipal>()
-
                     principal?.let {
-                        try {
-                            val task = call.receive<Task>()
-                            taskService.deleteTask(task)
-                            // Response if the task was deleted
-                            call.respond(HttpStatusCode.OK)
-                        } catch (_: TaskIdNotFoundError) {
-                            // Response if the task id doesn't exist
-                            call.respond(
-                                HttpStatusCode.NotFound,
-                                "The task id couldn't be found."
-                            )
-                        }
+                        val task = call.receive<Task>()
+                        taskService.deleteTask(task)
+                        // Response if the task was deleted
+                        call.respond(HttpStatusCode.OK)
                     }
                 }
             }

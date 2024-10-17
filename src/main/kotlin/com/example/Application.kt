@@ -5,6 +5,7 @@ import com.example.plugins.configureDatabase
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSecurity
 import com.example.plugins.configureSerialization
+import com.example.plugins.configureStatusPages
 import com.example.plugins.configureTasks
 import com.example.task.repositories.TaskRepository
 import com.example.task.services.TaskService
@@ -31,4 +32,5 @@ fun Application.module() {
     configureDatabase()
     configureRouting(userService, taskService)
     configureTasks()
+    configureStatusPages()
 }
