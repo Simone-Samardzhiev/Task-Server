@@ -45,12 +45,6 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                         HttpStatusCode.OK,
                         "User successfully registered."
                     )
-                } catch (_: ContentTransformationException) {
-                    // Response if the user information couldn't be read from the body
-                    call.respond(
-                        HttpStatusCode.BadRequest,
-                        "The information from the json body could not be found."
-                    )
                 } catch (_: EmailInUserError) {
                     // Response if the email is already in use.
                     call.respond(
@@ -81,12 +75,6 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                     val token = userService.getToken(user)
                     // Response if the token was created successfully
                     call.respond(HttpStatusCode.OK, token)
-                } catch (_: ContentTransformationException) {
-                    // Response if the user information couldn't be read from the body
-                    call.respond(
-                        HttpStatusCode.BadRequest,
-                        "The information from the json body could not be found."
-                    )
                 } catch (_: WrongCredentialsError) {
                     // Response if the user credentials are wrong
                     call.respond(
@@ -138,19 +126,11 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                     val principal = call.principal<JWTPrincipal>()
 
                     principal?.let {
-                        try {
-                            // Getting the task
-                            val task = call.receive<NewTask>()
-                            taskService.addTask(task, it)
-                            // Response if the task was added.
-                            call.respond(HttpStatusCode.OK)
-                        } catch (_: ContentTransformationException) {
-                            // Response if the task information couldn't be read
-                            call.respond(
-                                HttpStatusCode.BadRequest,
-                                "The information from the json body could not be found."
-                            )
-                        }
+                        // Getting the task
+                        val task = call.receive<NewTask>()
+                        taskService.addTask(task, it)
+                        // Response if the task was added.
+                        call.respond(HttpStatusCode.OK)
                     } ?: call.respond( // Response if the token couldn't be found
                         HttpStatusCode.Unauthorized,
                         "The JWT could not be found."
@@ -167,12 +147,6 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                             taskService.updateTask(task)
                             // Response if the task was updated
                             call.respond(HttpStatusCode.OK)
-                        } catch (_: ContentTransformationException) {
-                            // Response if the token information couldn't be read
-                            call.respond(
-                                HttpStatusCode.BadRequest,
-                                "The information from the json body could not be found."
-                            )
                         } catch (_: TaskIdNotFoundError) {
                             // Response if the id of the task doesn't exist
                             call.respond(
@@ -195,12 +169,6 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                             taskService.deleteTask(task)
                             // Response if the task was deleted
                             call.respond(HttpStatusCode.OK)
-                        } catch (_: ContentTransformationException) {
-                            // Response if the task information couldn't be read
-                            call.respond(
-                                HttpStatusCode.BadRequest,
-                                "The information from the json body could not be found."
-                            )
                         } catch (_: TaskIdNotFoundError) {
                             // Response if the task id doesn't exist
                             call.respond(
