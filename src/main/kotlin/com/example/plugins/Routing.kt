@@ -96,10 +96,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                             HttpStatusCode.OK,
                             userService.jwtUserService.refreshToken(it)
                         )
-                    } ?: call.respond( // Response if the token couldn't be found
-                        HttpStatusCode.Unauthorized,
-                        "The JWT could not be found."
-                    )
+                    }
                 }
             }
         }
@@ -116,10 +113,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                             HttpStatusCode.OK,
                             taskService.getTasks(it)
                         )
-                    } ?: call.respond( // Response if the token couldn't be found
-                        HttpStatusCode.Unauthorized,
-                        "The JWT could not be found."
-                    )
+                    }
                 }
                 post {
                     // Getting the principal
@@ -131,10 +125,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                         taskService.addTask(task, it)
                         // Response if the task was added.
                         call.respond(HttpStatusCode.OK)
-                    } ?: call.respond( // Response if the token couldn't be found
-                        HttpStatusCode.Unauthorized,
-                        "The JWT could not be found."
-                    )
+                    }
                 }
 
                 put {
@@ -154,10 +145,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                                 "The task id couldn't be found."
                             )
                         }
-                    } ?: call.respond(
-                        HttpStatusCode.Unauthorized, // Response if the token couldn't be found
-                        "The JWT could not be found."
-                    )
+                    }
                 }
                 delete {
                     // Getting the principal
@@ -176,10 +164,7 @@ fun Application.configureRouting(userService: UserServiceInterface, taskService:
                                 "The task id couldn't be found."
                             )
                         }
-                    } ?: call.respond( // Response if the token couldn't be found
-                        HttpStatusCode.Unauthorized,
-                        "The JWT could not be found."
-                    )
+                    }
                 }
             }
         }
