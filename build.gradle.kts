@@ -1,7 +1,7 @@
 val kotlinVersion: String by project
 val logbackVersion: String by project
 val exposedVersion: String by project
-val h2Version: String by project
+val ktorVersion: String by project
 
 plugins {
     kotlin("jvm") version "2.0.20"
@@ -40,4 +40,4 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jvm:2.3.12")
     implementation("io.ktor:ktor-server-auth-jwt-jvm:2.3.12")
     implementation("org.quartz-scheduler:quartz:2.3.2")
-}
+    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")}
