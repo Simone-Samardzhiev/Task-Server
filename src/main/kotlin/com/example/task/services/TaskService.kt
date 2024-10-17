@@ -1,8 +1,8 @@
 package com.example.task.services
 
-import com.example.task.errors.TaskIdNotFoundError
-import com.example.task.models.Task
+import com.example.task.errors.TaskIdNotFoundException
 import com.example.task.models.NewTask
+import com.example.task.models.Task
 import com.example.task.repositories.TaskRepositoryInterface
 import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.UUID
@@ -13,6 +13,7 @@ class TaskService(override val taskRepository: TaskRepositoryInterface) : TaskSe
         val id = UUID.fromString(principal.payload.getClaim("id").asString())
         return taskRepository.getTasksByUserId(id)
     }
+
     override suspend fun addTask(task: NewTask, principal: JWTPrincipal) {
         val id = UUID.fromString(principal.payload.getClaim("id").asString())
         val task = Task(
@@ -32,11 +33,11 @@ class TaskService(override val taskRepository: TaskRepositoryInterface) : TaskSe
     /**
      * Method that will update an existing task.
      * @param task The task that will be updated.
-     * @throws TaskIdNotFoundError When the task id couldn't be found.
+     * @throws TaskIdNotFoundException When the task id couldn't be found.
      */
     override suspend fun updateTask(task: Task) {
         if (!taskRepository.updateTask(task)) {
-            throw TaskIdNotFoundError()
+            throw TaskIdNotFoundException()
         }
     }
 
@@ -48,7 +49,7 @@ class TaskService(override val taskRepository: TaskRepositoryInterface) : TaskSe
      */
     override suspend fun deleteTask(task: Task) {
         if (!taskRepository.deleteTask(task)) {
-            throw TaskIdNotFoundError()
+            throw TaskIdNotFoundException()
         }
     }
 }
